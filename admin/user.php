@@ -91,7 +91,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Modal -->
     <div class="modal fade" id="view_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
@@ -125,7 +125,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="modal fade" id="edit_status" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="edit_status_form">
                     <div class="modal-header">

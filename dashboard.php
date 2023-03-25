@@ -176,9 +176,9 @@ $user_id = $_SESSION['user_id'];
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%</span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%</span></h4>
                                         <div class="progress mb-4">
-                                            <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     <?php } ?>
                                 </div>
@@ -215,9 +215,9 @@ $user_id = $_SESSION['user_id'];
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%</span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%</span></h4>
                                         <div class="progress mb-4">
-                                            <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     <?php } ?>
                                 </div>

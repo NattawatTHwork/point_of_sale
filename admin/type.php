@@ -78,7 +78,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Modal -->
     <div class="modal fade" id="insert_type" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="insert_type_form">
                     <div class="modal-header">
@@ -103,7 +103,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="modal fade" id="edit_type" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="edit_type_form">
                     <div class="modal-header">

@@ -77,6 +77,10 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                     </div>
+                    <button id="download_link" onClick="javascript:ExcelReport();">
+                        <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
+                    </button>
+
 
                 </div>
             </div>
@@ -89,7 +93,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Modal -->
     <div class="modal fade" id="insert_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="insert_product_form">
                     <div class="modal-header">
@@ -135,7 +139,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <div class="modal fade" id="edit_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <form id="edit_product_form">
                     <div class="modal-header">
@@ -180,7 +184,28 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://unpkg.com/file-saver@1.3.3/FileSaver.js"></script>
     <script>
+        function ExcelReport() //function สำหรับสร้าง ไฟล์ excel จากตาราง
+        {
+            var sheet_name = "excel_sheet"; /* กำหหนดชื่อ sheet ให้กับ excel โดยต้องไม่เกิน 31 ตัวอักษร */
+            var elt = document.getElementById('dataTable'); /*กำหนดสร้างไฟล์ excel จาก table element ที่มี id ชื่อว่า myTable*/
+            let originalTable = elt.cloneNode(true);
+            let rows = elt.rows;
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].deleteCell(-1);
+            }
+
+            /*------สร้างไฟล์ excel------*/
+            var wb = XLSX.utils.table_to_book(elt, {
+                sheet: sheet_name
+            });
+            XLSX.writeFile(wb, 'report.xlsx'); //Download ไฟล์ excel จากตาราง html โดยใช้ชื่อว่า report.xlsx
+
+            elt.parentNode.replaceChild(originalTable, elt);
+        }
+
         $(document).ready(function() {
             $('#insert_product_form').submit(function(event) {
                 console.log($(this).serialize())
