@@ -17,7 +17,7 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 
 $type_data = $connect->prepare("SELECT * FROM type");
 $type_data->execute();
-$row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
+$row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);  
 ?>
 
 <body id="page-top">
@@ -45,20 +45,25 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th width="35%">ชื่อ</th>
-                                            <th width="30%">ประเภท</th>
-                                            <th width="15%">ราคา</th>
-                                            <th width="10%">จำนวน</th>
-                                            <th width="10%">ตัวเลือก</th>
+                                            <th width="35%" class="text-center">ชื่อ</th>
+                                            <th width="30%" class="text-center">ประเภท</th>
+                                            <th width="15%" class="text-center">ราคา</th>
+                                            <th width="10%" class="text-center">จำนวน</th>
+                                            <th width="10%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($row_product as $row) { ?>
+                                        <?php
+                                        foreach ($row_product as $row) {
+                                            $quantity = $connect->prepare("SELECT SUM(quantity) as quantity FROM record WHERE product_id = '".$row['product_id']."'");
+                                            $quantity->execute();
+                                            $row_quantity = $quantity->fetch(PDO::FETCH_ASSOC);
+                                        ?>
                                             <tr>
-                                                <td><?= $row['name'] ?></td>
-                                                <td><?= $row['type'] ?></td>
-                                                <td><?= $row['price'] - $row['discount'] ?></td>
-                                                <td></td>
+                                                <td class="text-center"><?= $row['name'] ?></td>
+                                                <td class="text-center"><?= $row['type'] ?></td>
+                                                <td class="text-center"><?= $row['price'] - $row['discount'] ?></td>
+                                                <td class="text-center"><?= isset($row_quantity['quantity']) ? $row_quantity['quantity'] : 0 ?></td>
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -75,12 +80,11 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                     </tbody>
                                 </table>
                             </div>
+                            <button id="download_link" onClick="javascript:ExcelReport();" class="btn btn-primary float-right mt-3">
+                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
+                            </button>
                         </div>
                     </div>
-                    <button id="download_link" onClick="javascript:ExcelReport();">
-                        <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
-                    </button>
-
 
                 </div>
             </div>
