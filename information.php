@@ -37,6 +37,9 @@ if ($row['status'] == 1) {
 </head>
 
 <body>
+    <div>
+        <button type="button" class="btn btn-danger float-end m-3">ออกจากระบบ</button>
+    </div>
     <div class="container-sm w-50" style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
         <div>
             <h1>เพิ่มข้อมูล</h1>
@@ -84,14 +87,14 @@ if ($row['status'] == 1) {
                             }
                             if (response == 'fail') {
                                 Swal.fire({
-                                    title: 'เกิดข้อผิดพลาด',
-                                    icon: 'error',
-                                    confirmButtonText: 'ตกลง',
-                                    confirmButtonColor: '#0d6efd'
-                                })
-                                .then(function() {
-                                    location.reload();
-                                });
+                                        title: 'เกิดข้อผิดพลาด',
+                                        icon: 'error',
+                                        confirmButtonText: 'ตกลง',
+                                        confirmButtonColor: '#0d6efd'
+                                    })
+                                    .then(function() {
+                                        location.reload();
+                                    });
                             }
                         },
                         error: function(error) {

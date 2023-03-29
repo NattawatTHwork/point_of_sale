@@ -33,6 +33,20 @@
         </a>
     </li>
 
+    <li class="nav-item active">
+        <a class="nav-link" href="report_payment.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Report by Payment</span>
+        </a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link" href="report_product.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Report by Product</span>
+        </a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

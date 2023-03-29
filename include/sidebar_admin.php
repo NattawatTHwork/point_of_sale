@@ -33,6 +33,20 @@
         </a>
     </li>
 
+    <li class="nav-item active">
+        <a class="nav-link" href="report_user.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Report by User</span>
+        </a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link" href="report_type.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Report by Type</span>
+        </a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider">
 

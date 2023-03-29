@@ -15,6 +15,14 @@ $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+</style>
+
 <body id="page-top">
     <div id="wrapper">
         <?php include 'include/sidebar.php'; ?>
@@ -34,13 +42,13 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
                                             <h5 class="card-text"><?= $row['price'] - $row['discount'] ?> บาท</h5>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-outline-danger" onclick="decreaseQuantity<?= $i += 1 ?>()">-</button>
+                                                    <button type="button" class="btn btn-danger" onclick="decreaseQuantity<?= $i += 1 ?>()">-</button>
                                                 </div>
                                                 <input type="hidden" name="price<?= $i ?>" id="price<?= $i ?>" value="<?= $row['price'] - $row['discount'] ?>" class="form-control">
                                                 <input type="hidden" name="product_id<?= $i ?>" id="product_id<?= $i ?>" value="<?= $row['product_id'] ?>" class="form-control">
                                                 <input type="number" name="quantity<?= $i ?>" id="quantity<?= $i ?>" value="0" class="form-control" style="padding: 0px; font-size: 20px; text-align: center;">
                                                 <div class="input-group-append">
-                                                    <button type="button" class="btn btn-outline-success" onclick="increaseQuantity<?= $i ?>()">+</button>
+                                                    <button type="button" class="btn btn-primary" onclick="increaseQuantity<?= $i ?>()">+</button>
                                                 </div>
                                             </div>
                                         </div>

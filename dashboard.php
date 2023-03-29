@@ -26,16 +26,16 @@ $months = array(
     "ธันวาคม" // December
 );
 
-if(isset($_GET['month'])){
-    $month=$_GET['month'];
-}else{
-    $month='MONTH(CURRENT_DATE())';
+if (isset($_GET['month'])) {
+    $month = $_GET['month'];
+} else {
+    $month = 'MONTH(CURRENT_DATE())';
 }
 
-if(isset($_GET['year'])){
-    $year=$_GET['year'];
-}else{
-    $year='YEAR(CURRENT_DATE())';
+if (isset($_GET['year'])) {
+    $year = $_GET['year'];
+} else {
+    $year = 'YEAR(CURRENT_DATE())';
 }
 ?>
 
@@ -220,7 +220,7 @@ if(isset($_GET['year'])){
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในเดือนนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0).'%' ?></span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในเดือนนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">
                                             <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
@@ -259,7 +259,7 @@ if(isset($_GET['year'])){
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในปีนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0).'%' ?></span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในปีนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">
                                             <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
