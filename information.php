@@ -37,73 +37,101 @@ if ($row['status'] == 1) {
 </head>
 
 <body>
-    <div>
-        <button type="button" class="btn btn-danger float-end m-3">ออกจากระบบ</button>
-    </div>
-    <div class="container-sm w-50" style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <div>
-            <h1>เพิ่มข้อมูล</h1>
-            <form id="insert_information">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="firstname" id="firstname" placeholder="ชื่อ" value="<?= $row['firstname'] ?>" required />
-                    <label for="firstname">ชื่อ</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="lastname" id="lastname" placeholder="นามสกุล" value="<?= $row['lastname'] ?>" required />
-                    <label for="lastname">นามสกุล</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" name="store" id="store" placeholder="ชื่อร้านค้า" value="<?= $row['store'] ?>" required />
-                    <label for="store">ชื่อร้านค้า</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" required><?= $row['description'] ?></textarea>
-                    <label for="description">รายละเอียด</label>
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary" type="submit">เพิ่มข้อมูล</button>
-                </div>
-            </form>
+    <div class="container">
+        <div class="text-end">
+            <a href="./check/logout.php" type="button" class="btn btn-danger m-3">ออกจากระบบ</a>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <script>
-            $(document).ready(function() {
-                $('#insert_information').submit(function(event) {
-                    event.preventDefault();
-                    $.ajax({
-                        url: 'check/insert_information.php',
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        success: function(response) {
-                            if (response == 'success') {
-                                Swal.fire({
-                                    title: 'สำเร็จ',
-                                    icon: 'success',
+        <!-- <div class="container-sm w-50" style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> -->
+        <div class="container-sm w-50" style="margin-top: 20px; margin-bottom: 20px;">
+            <div>
+                <h1>เพิ่มข้อมูล</h1>
+                <form id="insert_information">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="ชื่อ" value="<?= $row['firstname'] ?>" required />
+                        <label for="firstname">ชื่อ</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="นามสกุล" value="<?= $row['lastname'] ?>" required />
+                        <label for="lastname">นามสกุล</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="store" id="store" placeholder="ชื่อร้านค้า" value="<?= $row['store'] ?>" required />
+                        <label for="store">ชื่อร้านค้า</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" required><?= $row['description'] ?></textarea>
+                        <label for="description">รายละเอียด</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <img id="showpic" src="./img/<?= !empty($row['img_path']) ? $row['img_path'] : 'add_image.png' ?>" class="rounded col-sm-12" onclick="document.getElementById('preimg').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
+                    </div>
+                    <div class="text-center">
+                        <input type="hidden" name="checkpreimg" value="<?= $row['img_path'] ?>">
+                        <input type="file" class="sr-only" id="preimg" name="preimg" accept="image/*" onchange="readURL(this);" style="display: none;">
+                    </div>
+                    <a onclick="$('#preimg').click();" class="m-2 mb-5 btn btn-success d-block mx-auto">เพิ่มรูป QR Code</a>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">เพิ่มข้อมูล</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
+            $('#insert_information').submit(function(event) {
+                event.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: 'check/insert_information.php',
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        if (response == 'success') {
+                            Swal.fire({
+                                title: 'สำเร็จ',
+                                text: 'กรุณารอสักครู่ กำลังตรวจสอบข้อมูลจากผู้ดูแล',
+                                icon: 'success',
+                                confirmButtonText: 'ตกลง',
+                                confirmButtonColor: '#0d6efd'
+                            }).then(function() {
+                                location.reload();
+                            });
+                        }
+                        if (response == 'fail') {
+                            Swal.fire({
+                                    title: 'เกิดข้อผิดพลาด',
+                                    icon: 'error',
                                     confirmButtonText: 'ตกลง',
                                     confirmButtonColor: '#0d6efd'
-                                }).then(function() {
+                                })
+                                .then(function() {
                                     location.reload();
                                 });
-                            }
-                            if (response == 'fail') {
-                                Swal.fire({
-                                        title: 'เกิดข้อผิดพลาด',
-                                        icon: 'error',
-                                        confirmButtonText: 'ตกลง',
-                                        confirmButtonColor: '#0d6efd'
-                                    })
-                                    .then(function() {
-                                        location.reload();
-                                    });
-                            }
-                        },
-                        error: function(error) {
-                            console.log(error)
                         }
-                    });
+                    },
+                    error: function(error) {
+                        console.log(error)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
                 });
             });
-        </script>
+        });
+    </script>
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#showpic').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </body>
 
 </html>

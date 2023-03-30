@@ -61,7 +61,10 @@ if (isset($_GET['year'])) {
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ค้นหา
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" class="text-gray-300">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                                ค้นหา
                             </button>
                         </form>
                     </div>
@@ -91,7 +94,7 @@ if (isset($_GET['year'])) {
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_month ?> บาท</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -180,7 +183,7 @@ if (isset($_GET['year'])) {
                                             <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_item_year ?> แก้ว</div>
                                         </div>
                                         <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +194,7 @@ if (isset($_GET['year'])) {
                     <!-- Content Row -->
                     <div class="row">
                         <?php
-                        $product = $connect->prepare("SELECT * FROM product");
+                        $product = $connect->prepare("SELECT * FROM type");
                         $product->execute();
                         $row_product = $product->fetchAll(PDO::FETCH_ASSOC);
 
@@ -211,13 +214,14 @@ if (isset($_GET['year'])) {
                                 <div class="card-body">
                                     <?php
                                     foreach ($row_product as $row) {
-                                        $product_id = $row['product_id'];
-                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                        $type_id = $row['type_id'];
+                                        echo $type_id;
+                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt INNER JOIN product ON product.product_id = record.product_id WHERE type_id = '$type_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
                                         $record->execute();
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในเดือนนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['type'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในเดือนนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">
                                             <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
@@ -230,7 +234,7 @@ if (isset($_GET['year'])) {
                     <!-- Content Row -->
                     <div class="row">
                         <?php
-                        $product = $connect->prepare("SELECT * FROM product");
+                        $product = $connect->prepare("SELECT * FROM type");
                         $product->execute();
                         $row_product = $product->fetchAll(PDO::FETCH_ASSOC);
 
@@ -250,13 +254,13 @@ if (isset($_GET['year'])) {
                                 <div class="card-body">
                                     <?php
                                     foreach ($row_product as $row) {
-                                        $product_id = $row['product_id'];
-                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND YEAR(timestamp) = $year");
+                                        $type_id = $row['type_id'];
+                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt INNER JOIN product ON product.product_id = record.product_id WHERE type_id = '$type_id' AND YEAR(timestamp) = $year");
                                         $record->execute();
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
                                         // echo $row_record['quantityall'];
                                     ?>
-                                        <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในปีนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
+                                        <h4 class="small font-weight-bold"><?= $row['type'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในปีนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">
                                             <div class="progress-bar" role="progressbar" style="width: <?= number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 2) ?>%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>

@@ -28,7 +28,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                 <?php include 'include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">สินค้า</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Products</h1>
                         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท</a> -->
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insert_product">
                             <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มสินค้า
@@ -81,7 +81,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                 </table>
                             </div>
                             <button id="download_link" onClick="javascript:ExcelReport();" class="btn btn-primary float-right mt-3">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
+                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวน์โหลดตาราง
                             </button>
                         </div>
                     </div>

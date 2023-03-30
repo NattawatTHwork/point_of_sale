@@ -63,7 +63,7 @@ $months = array(
                 <?php include 'include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">รายงาน</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Report by Payments</h1>
                         <form method="GET" action="report_payment.php">
                             <div class="d-inline">
                                 <select class="form-select form-control-lg is-valid d-inline" name="month">
@@ -80,7 +80,10 @@ $months = array(
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ค้นหา
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" class="text-gray-300">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                                ค้นหา
                             </button>
                         </form>
                     </div>
@@ -132,7 +135,7 @@ $months = array(
                                 </table>
                             </div>
                             <button id="download_link" onClick="javascript:ExcelReport();" class="btn btn-primary float-right mt-3">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
+                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวน์โหลดตาราง
                             </button>
                         </div>
                     </div>

@@ -60,7 +60,7 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                 <?php include '../include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">รายงาน</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Report by Types</h1>
                         <form method="GET" action="report_type.php">
                             <div class="d-inline">
                                 <select class="form-select form-control-lg is-valid d-inline" name="month">
@@ -77,7 +77,10 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ค้นหา
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" class="text-gray-300">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                </svg>
+                                ค้นหา
                             </button>
                         </form>
                     </div>
@@ -104,10 +107,10 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                                         $j = 1;
                                         foreach ($row_report as $row) {
                                             $price = $connect->prepare("SELECT net_price, quantity FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE type_id = '" . $row['type_id'] . "'");
-                                            if(isset($month) && isset($year)){
+                                            if (isset($month) && isset($year)) {
                                                 $price = $connect->prepare("SELECT net_price, quantity FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE type_id = '" . $row['type_id'] . "' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
                                             }
-                                            if(!isset($month) && isset($year)){
+                                            if (!isset($month) && isset($year)) {
                                                 $price = $connect->prepare("SELECT net_price, quantity FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE type_id = '" . $row['type_id'] . "' AND YEAR(timestamp) = $year");
                                             }
                                             $price->execute();
@@ -137,7 +140,7 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                                 </table>
                             </div>
                             <button id="download_link" onClick="javascript:ExcelReport();" class="btn btn-primary float-right mt-3">
-                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวโหลดตาราง
+                                <i class="fas fa-download fa-sm text-white-50"></i> ดาวน์โหลดตาราง
                             </button>
                         </div>
                     </div>

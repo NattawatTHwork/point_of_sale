@@ -8,8 +8,18 @@ if (isset($_SESSION['user_id'])) {
     $store = $_POST['store'];
     $description = $_POST['description'];
     $user_id = $_SESSION['user_id'];
+    $newname = $_POST['checkpreimg'];
 
-    $update_information = $connect->query("UPDATE user SET firstname = '$firstname', lastname = '$lastname', store = '$store', description = '$description' WHERE user_id = '$user_id'");
+    if (!empty($_FILES['preimg']['name'])) {
+        $image = $_FILES['preimg']['name'];
+        $newname = uniqid(10) . basename($image);
+        $target = "../img/" . $newname;
+        move_uploaded_file($_FILES['preimg']['tmp_name'], $target);
+        // $conn->query("INSERT INTO contractor_pic (contractor_info_id, contractor_pic_sort, contractor_pic_path)
+        // VALUE('" . $contractor_id . "', '1', '" . $newname . "')");
+    }
+
+    $update_information = $connect->query("UPDATE user SET firstname = '$firstname', lastname = '$lastname', store = '$store', description = '$description', img_path = '$newname' WHERE user_id = '$user_id'");
     if ($update_information) {
         echo 'success';
         exit();

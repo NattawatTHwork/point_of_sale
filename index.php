@@ -32,17 +32,19 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
                 <div class="container-fluid">
                     <form id="insert_record_form">
                         <div class="row">
-                            <?php $i = 0;
-                            foreach ($row_product as $row) { ?>
+                            <?php
+                            $i = 0;
+                            foreach ($row_product as $row) {
+                            ?>
                                 <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center mb-3">
                                     <div class="card">
                                         <!-- <img class="card-img-top" src="image.jpg" alt="Card image cap"> -->
                                         <div class="card-body">
-                                            <h5 class="card-title"><?= $row['name'] ?></h5>
+                                            <h4 class="card-title font-weight-bold"><?= $row['name'] ?></h4>
                                             <h5 class="card-text"><?= $row['price'] - $row['discount'] ?> บาท</h5>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-danger" onclick="decreaseQuantity<?= $i += 1 ?>()">-</button>
+                                                    <button type="button" class="btn btn-dark" onclick="decreaseQuantity<?= $i += 1 ?>()">-</button>
                                                 </div>
                                                 <input type="hidden" name="price<?= $i ?>" id="price<?= $i ?>" value="<?= $row['price'] - $row['discount'] ?>" class="form-control">
                                                 <input type="hidden" name="product_id<?= $i ?>" id="product_id<?= $i ?>" value="<?= $row['product_id'] ?>" class="form-control">
@@ -54,12 +56,20 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
                                 </div>
-                            <?php } ?>
+                            <?php
+                            }
+                            ?>
                             <input type="hidden" name="count" id="count" value="<?= $i ?>" class="form-control">
                         </div>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <button type="submit" class="btn btn-primary">ยืนยัน</button>
-                        </div>
+                        <?php
+                        if ($product_data->rowCount() > 0) {
+                        ?>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="btn btn-primary">ยืนยัน</button>
+                            </div>
+                        <?php
+                        }
+                        ?>
                     </form>
                 </div>
             </div>

@@ -23,7 +23,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 <?php include '../include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">สมาชิก</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Users</h1>
                         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท</a> -->
                         <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insert_type">
                             <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท
@@ -60,7 +60,6 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php } else { ?>
                                                     <td class="text-success text-center">ใช้งานได้</td>
                                                 <?php } ?>
-                                                ?>
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -112,9 +111,13 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                         <label for="store">ชื่อร้านค้า</label>
                         <input type="text" class="form-control" name="store" id="store" placeholder="ประเภท" disabled>
                     </div>
-                    <div class="form-floating">
+                    <div class="form-group">
                         <label for="description">รายละเอียด</label>
                         <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" disabled></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">QR Code</label><br>
+                        <img src="" name="img_path" id="img_path" class="mx-auto d-block">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -200,6 +203,8 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
+                    var img = document.getElementById('img_path');
+                    img.setAttribute("src", '../img/'+res.img_path);
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
                     $("#store").val(res.store);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 23, 2023 at 08:26 PM
+-- Generation Time: Mar 30, 2023 at 10:04 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -61,9 +61,10 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`payment_id`, `no_receipt`, `method`, `timestamp`) VALUES
-(9, '20230323010553', 1, '2022-12-21 19:03:10'),
+(9, '20230323010553', 1, '2023-02-14 19:03:10'),
 (10, '20230323010609', 1, '2023-03-22 18:06:17'),
-(11, '20230323010747', 0, '2023-03-22 18:07:48');
+(11, '20230323010747', 0, '2023-03-22 18:07:48'),
+(12, '20230329150102', 0, '2023-03-29 08:01:04');
 
 -- --------------------------------------------------------
 
@@ -86,12 +87,14 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `type_id`, `user_id`, `name`, `description`, `price`, `discount`) VALUES
-(2, 11, 7, '1', 'ขายทุกอย่าง', 50, 0),
-(3, 11, 7, '2', 'ขายทุกอย่าง', 50, 5),
-(4, 11, 7, '3', 'ขายทุกอย่าง', 100, 10),
-(5, 13, 7, '4', 'ขายทุกอย่าง', 55, 5),
-(6, 18, 7, '5', 'ขายทุกอย่าง', 55, 10),
-(7, 11, 7, '6', 'user_id', 50, 5);
+(2, 11, 7, 'ลาเต้', 'ขายทุกอย่าง', 50, 0),
+(3, 11, 7, 'เอสเพสโช่', 'ขายทุกอย่าง', 50, 5),
+(4, 11, 7, 'กาแฟดำ', 'ขายทุกอย่าง', 100, 10),
+(5, 13, 7, 'มอคค่า', 'ขายทุกอย่าง', 55, 5),
+(6, 18, 7, 'น้ำส้ม', 'ขายทุกอย่าง', 55, 10),
+(7, 11, 7, 'นม', 'user_id', 50, 5),
+(8, 11, 8, 'cannon', '20', 100, 20),
+(9, 12, 8, 'fuji', '5', 100, 5);
 
 -- --------------------------------------------------------
 
@@ -117,7 +120,9 @@ INSERT INTO `record` (`record_id`, `no_receipt`, `product_id`, `quantity`, `net_
 (38, '20230323010609', 4, 1, 90),
 (39, '20230323010609', 5, 1, 50),
 (40, '20230323010747', 2, 1, 50),
-(41, '20230323010747', 3, 1, 45);
+(41, '20230323010747', 3, 1, 45),
+(42, '20230329150102', 8, 1, 80),
+(43, '20230329150102', 9, 1, 95);
 
 -- --------------------------------------------------------
 
@@ -162,15 +167,17 @@ CREATE TABLE `user` (
   `firstname` varchar(255) NOT NULL,
   `lastname` varchar(255) NOT NULL,
   `store` varchar(255) NOT NULL,
-  `description` text NOT NULL
+  `description` text NOT NULL,
+  `img_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `email`, `password`, `status`, `firstname`, `lastname`, `store`, `description`) VALUES
-(7, 'user@gmail.com', '$2y$10$BChw6lO9TBNlE0szK7TMoeIXl6GAf3sGDBbq67yv5A0.X9VeNeaL.', 1, 'Nattawat', 'Thungyen', 'BOMPaPerX', 'ขายทุกอย่าง');
+INSERT INTO `user` (`user_id`, `email`, `password`, `status`, `firstname`, `lastname`, `store`, `description`, `img_path`) VALUES
+(7, 'user@gmail.com', '$2y$10$BChw6lO9TBNlE0szK7TMoeIXl6GAf3sGDBbq67yv5A0.X9VeNeaL.', 1, 'Nattawat', 'Thungyen', 'BOMPaPerX', 'ขายทุกอย่าง', '106425d46bdff69QR.png'),
+(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', 0, 'Wanchana', 'Kaedmun', 'นายอาม', 'ขายกล้อง', '');
 
 --
 -- Indexes for dumped tables
@@ -226,19 +233,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `type`
@@ -250,7 +257,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
