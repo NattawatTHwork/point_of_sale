@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2023 at 10:04 PM
+-- Generation Time: Apr 08, 2023 at 08:48 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -41,7 +41,8 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `email`, `password`, `status`, `firstname`, `lastname`) VALUES
-(1, 'admin@gmail.com', '$2y$10$bilVP71iW.IFnzkR/ncYzOuYReIYNedKZ4KcMKgKtgLpsE.5mHwDe', 1, 'Nattawat', 'Thungyen');
+(1, 'admin@gmail.com', '$2y$10$bilVP71iW.IFnzkR/ncYzOuYReIYNedKZ4KcMKgKtgLpsE.5mHwDe', 1, 'Nattawat', 'Thungyen'),
+(2, 'admin2@gmail.com', '$2y$10$JD55ly5EDvk6DaKlIp1m8Ovc4Qza1TCl2/jntfTnNn9vLQ.GRuj8O', 0, 'Wanchana', 'Kaedmun');
 
 -- --------------------------------------------------------
 
@@ -53,18 +54,17 @@ CREATE TABLE `payment` (
   `payment_id` int(10) NOT NULL,
   `no_receipt` varchar(255) NOT NULL,
   `method` tinyint(1) NOT NULL COMMENT '0=cash\r\n1=qrcode',
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `payment`
 --
 
-INSERT INTO `payment` (`payment_id`, `no_receipt`, `method`, `timestamp`) VALUES
-(9, '20230323010553', 1, '2023-02-14 19:03:10'),
-(10, '20230323010609', 1, '2023-03-22 18:06:17'),
-(11, '20230323010747', 0, '2023-03-22 18:07:48'),
-(12, '20230329150102', 0, '2023-03-29 08:01:04');
+INSERT INTO `payment` (`payment_id`, `no_receipt`, `method`, `timestamp`, `status`) VALUES
+(33, '20230408030457', 0, '2023-04-07 20:04:57', 0),
+(34, '20230408033023', 1, '2023-04-07 20:30:23', 0);
 
 -- --------------------------------------------------------
 
@@ -115,14 +115,9 @@ CREATE TABLE `record` (
 --
 
 INSERT INTO `record` (`record_id`, `no_receipt`, `product_id`, `quantity`, `net_price`) VALUES
-(36, '20230323010553', 2, 2, 50),
-(37, '20230323010553', 3, 1, 45),
-(38, '20230323010609', 4, 1, 90),
-(39, '20230323010609', 5, 1, 50),
-(40, '20230323010747', 2, 1, 50),
-(41, '20230323010747', 3, 1, 45),
-(42, '20230329150102', 8, 1, 80),
-(43, '20230329150102', 9, 1, 95);
+(62, '20230408030457', 4, 1, 90),
+(63, '20230408033023', 2, 1, 50),
+(64, '20230408033023', 3, 1, 45);
 
 -- --------------------------------------------------------
 
@@ -227,13 +222,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `admin_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `admin_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -245,7 +240,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `type`

@@ -9,7 +9,7 @@ if (!isset($_SESSION['admin_id'])) {
 require '../include/connect.php';
 include '../include/header.php';
 
-$user_data = $connect->prepare("SELECT * FROM user");
+$user_data = $connect->prepare("SELECT * FROM admin");
 $user_data->execute();
 $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -23,13 +23,13 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 <?php include '../include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Users</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Admins</h1>
                     </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">ตารางรายชื่อสมาชิก</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">ตารางรายชื่อผู้ดูแลระบบ</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -38,9 +38,8 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                         <tr>
                                             <th width="20%">ชื่อ</th>
                                             <th width="20%">นามสกุล</th>
-                                            <th width="20%">อีเมล</th>
-                                            <th width="20%">ชื่อร้านค้า</th>
-                                            <th width="10%">สถานะ</th>
+                                            <th width="30%">อีเมล</th>
+                                            <th width="20%">สถานะ</th>
                                             <th width="10%">ตัวเลือก</th>
                                         </tr>
                                     </thead>
@@ -50,7 +49,6 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= $row['firstname'] ?></td>
                                                 <td><?= $row['lastname'] ?></td>
                                                 <td><?= $row['email'] ?></td>
-                                                <td><?= $row['store'] ?></td>
                                                 <?php if ($row['status'] == 0) { ?>
                                                     <td class="text-danger">ใข้งานไม่ได้</td>
                                                 <?php } else { ?>
@@ -62,8 +60,8 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                             ตัวเลือก
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <button class="dropdown-item" type="button" onclick="get_user(<?= $row['user_id'] ?>)">ดูข้อมูล</button>
-                                                            <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button>
+                                                            <button class="dropdown-item" type="button" onclick="get_admin(<?= $row['admin_id'] ?>)">ดูข้อมูล</button>
+                                                            <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['admin_id'] ?>)">เปลี่ยนสถานะ</button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -85,7 +83,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
     <?php include '../include/js.php'; ?>
 
     <!-- Modal -->
-    <div class="modal fade" id="view_user" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="view_admin" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -103,18 +101,6 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                         <label for="lastname">นามสกุล</label>
                         <input type="text" class="form-control" name="lastname" id="lastname" placeholder="ประเภท" disabled>
                     </div>
-                    <div class="form-group">
-                        <label for="store">ชื่อร้านค้า</label>
-                        <input type="text" class="form-control" name="store" id="store" placeholder="ประเภท" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">รายละเอียด</label>
-                        <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" disabled></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">QR Code</label><br>
-                        <img src="" name="img_path" id="img_path" class="mx-auto d-block">
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -128,12 +114,12 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="edit_status_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ดูแลระบบ</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <input type="hidden" class="form-control" name="user_id" id="user_id_edit">
+                    <input type="hidden" class="form-control" name="admin_id" id="admin_id_edit">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="status">สถานะ</label>
@@ -157,7 +143,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
             $('#edit_status_form').submit(function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: 'check/edit_user.php',
+                    url: 'check/edit_admin.php',
                     method: 'POST',
                     data: $(this).serialize(),
                     success: function(response) {
@@ -190,37 +176,33 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
             });
         });
 
-        function get_user(user_id) {
+        function get_admin(admin_id) {
             $.ajax({
-                url: 'check/get_user.php',
+                url: 'check/get_admin.php',
                 type: "POST",
                 data: {
-                    user_id: user_id
+                    admin_id: admin_id
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
-                    var img = document.getElementById('img_path');
-                    img.setAttribute("src", '../img/'+res.img_path);
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
-                    $("#store").val(res.store);
-                    $("#description").val(res.description);
-                    $("#view_user").modal("show");
+                    $("#view_admin").modal("show");
                 }
             });
         }
 
-        function edit_status(user_id) {
+        function edit_status(admin_id) {
             $.ajax({
-                url: 'check/get_user.php',
+                url: 'check/get_admin.php',
                 type: "POST",
                 data: {
-                    user_id: user_id
+                    admin_id: admin_id
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
                     $('#status option[value="' + res.status + '"]').prop('selected', true);
-                    $("#user_id_edit").val(user_id);
+                    $("#admin_id_edit").val(admin_id);
                     $("#edit_status").modal("show");
                 }
             });

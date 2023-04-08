@@ -96,7 +96,7 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                                     <thead>
                                         <tr>
                                             <th width="10%" class="text-center">ลำดับ</th>
-                                            <th width="35%" class="text-center">ร้านค้า</th>
+                                            <th width="35%" class="text-center">ประเภทสินค้า</th>
                                             <th width="35%" class="text-center">จำนวนแก้ว</th>
                                             <th width="20%" class="text-center">ยอดขาย</th>
                                         </tr>

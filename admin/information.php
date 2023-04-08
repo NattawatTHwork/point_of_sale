@@ -9,7 +9,6 @@ $check = $connect->prepare("SELECT * FROM admin WHERE admin_id = :admin_id");
 $check->bindParam(":admin_id", $admin_id);
 $check->execute();
 $row = $check->fetch(PDO::FETCH_ASSOC);
-print_r($row);
 if ($row['status'] == 1) {
     header("location: dashboard.php");
 }

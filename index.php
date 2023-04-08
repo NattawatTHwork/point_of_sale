@@ -184,6 +184,7 @@ $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
                                 /* Read more about handling dismissals below */
                                 result.dismiss === Swal.DismissReason.cancel
                             ) {
+                                var cash_data = $(this).serialize();
                                 Swal.fire({
                                         title: 'สำเร็จ',
                                         icon: 'success',
@@ -191,7 +192,7 @@ $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
                                         confirmButtonColor: '#4e73df'
                                     })
                                     .then(function() {
-                                        var data = $(this).serialize();
+                                        var data = cash_data;
                                         data += '&method=0';
                                         $.ajax({
                                             url: 'check/insert_payment.php',
