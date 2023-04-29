@@ -26,7 +26,7 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">ตารางรายงาน</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">ตารางแสดงข้อมูลการขายวันนี้</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -49,13 +49,13 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
                                             <tr>
                                                 <td class="text-center"><?= $j++ ?></td>
                                                 <td class="text-center"><?= $row['no_receipt'] ?></td>
-                                                <td class="text-center"><?= $row['method'] == 1 ? 'QR Code' : 'เงินสด' ?></td>
+                                                <td class="text-center"><?= $row['method'] == 1 ? 'พร้อมเพย์' : 'เงินสด' ?></td>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-primary" onclick="get_record(<?= $row['no_receipt'] ?>)">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                    <a class="btn btn-primary" href="./detail.php?no_receipt=<?= $row['no_receipt'] ?>">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" class="text-gray-300">
                                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                                                         </svg>
-                                                    </button>
+                                                    </a>
                                                 </td>
                                                 <td class="text-center"><button class="btn <?= $row['status'] == 0 ? 'btn-danger' : 'btn-success' ?>" onclick="change_status(<?= $row['payment_id'] ?>)"><?= $row['status'] == 0 ? 'ยังไม่ได้จัดทำ' : 'จัดทำแล้ว' ?></button></td>
                                             </tr>
@@ -137,66 +137,66 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
             });
         };
 
-        function get_record(no_receipt) {
-            $.ajax({
-                url: 'check/get_record.php',
-                type: "POST",
-                data: {
-                    no_receipt: no_receipt
-                },
-                success: function(response) {
-                    const data = JSON.parse(response);
+        // function get_record(no_receipt) {
+        //     $.ajax({
+        //         url: 'check/get_record.php',
+        //         type: "POST",
+        //         data: {
+        //             no_receipt: no_receipt
+        //         },
+        //         success: function(response) {
+        //             const data = JSON.parse(response);
 
-                    const myArrayDiv = document.getElementById("myArray");
+        //             const myArrayDiv = document.getElementById("myArray");
 
-                    const table = document.createElement('table');
-                    table.classList.add('table', 'table-bordered', 'w-100');
+        //             const table = document.createElement('table');
+        //             table.classList.add('table', 'table-bordered', 'w-100');
 
-                    const headerRow = document.createElement('tr');
-                    const header1 = document.createElement('th');
-                    header1.textContent = 'ชื่อสินค้า';
-                    header1.style.width = '30%';
-                    header1.classList.add('text-center');
-                    const header2 = document.createElement('th');
-                    header2.textContent = 'จำนวน';
-                    header2.style.width = '20%';
-                    header2.classList.add('text-center');
-                    const header3 = document.createElement('th');
-                    header3.textContent = 'ราคา';
-                    header3.style.width = '20%';
-                    header3.classList.add('text-center');
-                    headerRow.appendChild(header1);
-                    headerRow.appendChild(header2);
-                    headerRow.appendChild(header3);
-                    table.appendChild(headerRow);
+        //             const headerRow = document.createElement('tr');
+        //             const header1 = document.createElement('th');
+        //             header1.textContent = 'ชื่อสินค้า';
+        //             header1.style.width = '30%';
+        //             header1.classList.add('text-center');
+        //             const header2 = document.createElement('th');
+        //             header2.textContent = 'จำนวน';
+        //             header2.style.width = '20%';
+        //             header2.classList.add('text-center');
+        //             const header3 = document.createElement('th');
+        //             header3.textContent = 'ราคา';
+        //             header3.style.width = '20%';
+        //             header3.classList.add('text-center');
+        //             headerRow.appendChild(header1);
+        //             headerRow.appendChild(header2);
+        //             headerRow.appendChild(header3);
+        //             table.appendChild(headerRow);
 
-                    for (let i = 0; i < data.length; i++) {
-                        const row = document.createElement('tr');
-                        const cell1 = document.createElement('td');
-                        const cell2 = document.createElement('td');
-                        const cell3 = document.createElement('td');
-                        cell1.textContent = data[i].name;
-                        cell1.style.width = '30%';
-                        cell1.classList.add('text-center');
-                        cell2.textContent = data[i].quantity;
-                        cell2.style.width = '20%';
-                        cell2.classList.add('text-center');
-                        cell3.textContent = data[i].net_price;
-                        cell3.style.width = '20%';
-                        cell3.classList.add('text-center');
-                        row.appendChild(cell1);
-                        row.appendChild(cell2);
-                        row.appendChild(cell3);
-                        table.appendChild(row);
-                    }
+        //             for (let i = 0; i < data.length; i++) {
+        //                 const row = document.createElement('tr');
+        //                 const cell1 = document.createElement('td');
+        //                 const cell2 = document.createElement('td');
+        //                 const cell3 = document.createElement('td');
+        //                 cell1.textContent = data[i].name;
+        //                 cell1.style.width = '30%';
+        //                 cell1.classList.add('text-center');
+        //                 cell2.textContent = data[i].quantity;
+        //                 cell2.style.width = '20%';
+        //                 cell2.classList.add('text-center');
+        //                 cell3.textContent = data[i].net_price;
+        //                 cell3.style.width = '20%';
+        //                 cell3.classList.add('text-center');
+        //                 row.appendChild(cell1);
+        //                 row.appendChild(cell2);
+        //                 row.appendChild(cell3);
+        //                 table.appendChild(row);
+        //             }
 
-                    myArrayDiv.innerHTML = '';
-                    myArrayDiv.appendChild(table);
+        //             myArrayDiv.innerHTML = '';
+        //             myArrayDiv.appendChild(table);
 
-                    $("#view_record").modal("show");
-                }
-            });
-        }
+        //             $("#view_record").modal("show");
+        //         }
+        //     });
+        // }
     </script>
 </body>
 

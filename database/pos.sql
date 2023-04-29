@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2023 at 08:48 AM
+-- Generation Time: Apr 29, 2023 at 12:18 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -63,8 +63,8 @@ CREATE TABLE `payment` (
 --
 
 INSERT INTO `payment` (`payment_id`, `no_receipt`, `method`, `timestamp`, `status`) VALUES
-(33, '20230408030457', 0, '2023-04-07 20:04:57', 0),
-(34, '20230408033023', 1, '2023-04-07 20:30:23', 0);
+(47, '20230429163518', 1, '2023-04-29 09:35:18', 0),
+(48, '20230429164321', 0, '2023-04-29 09:43:21', 0);
 
 -- --------------------------------------------------------
 
@@ -79,22 +79,19 @@ CREATE TABLE `product` (
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `price` int(10) NOT NULL,
-  `discount` int(10) NOT NULL
+  `discount` int(10) NOT NULL,
+  `img_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `type_id`, `user_id`, `name`, `description`, `price`, `discount`) VALUES
-(2, 11, 7, 'ลาเต้', 'ขายทุกอย่าง', 50, 0),
-(3, 11, 7, 'เอสเพสโช่', 'ขายทุกอย่าง', 50, 5),
-(4, 11, 7, 'กาแฟดำ', 'ขายทุกอย่าง', 100, 10),
-(5, 13, 7, 'มอคค่า', 'ขายทุกอย่าง', 55, 5),
-(6, 18, 7, 'น้ำส้ม', 'ขายทุกอย่าง', 55, 10),
-(7, 11, 7, 'นม', 'user_id', 50, 5),
-(8, 11, 8, 'cannon', '20', 100, 20),
-(9, 12, 8, 'fuji', '5', 100, 5);
+INSERT INTO `product` (`product_id`, `type_id`, `user_id`, `name`, `description`, `price`, `discount`, `img_path`) VALUES
+(17, 23, 7, 'โค้ก', 'โค้ก', 15, 0, '10644cc946558778851959149010_1-20221207171555-.jpg'),
+(18, 26, 7, 'นมตราหมี', 'นมตราหมี', 12, 0, '10644cc9b4f38c3BB-Product-shot-01.png'),
+(19, 24, 7, 'ลาเต้', 'ลาเต้', 60, 0, '10644cca5474a0e95a6b902c8074b248d3f98297d293237.png'),
+(20, 24, 7, 'กาแฟดำ', 'กาแฟดำ', 55, 0, '10644cca7ae86bbff43e8c44724493587d06bb75bb51915.png');
 
 -- --------------------------------------------------------
 
@@ -115,9 +112,9 @@ CREATE TABLE `record` (
 --
 
 INSERT INTO `record` (`record_id`, `no_receipt`, `product_id`, `quantity`, `net_price`) VALUES
-(62, '20230408030457', 4, 1, 90),
-(63, '20230408033023', 2, 1, 50),
-(64, '20230408033023', 3, 1, 45);
+(84, '20230429163518', 17, 2, 15),
+(85, '20230429163518', 18, 2, 12),
+(86, '20230429164321', 17, 3, 15);
 
 -- --------------------------------------------------------
 
@@ -135,18 +132,11 @@ CREATE TABLE `type` (
 --
 
 INSERT INTO `type` (`type_id`, `type`) VALUES
-(11, 'Espresso'),
-(12, 'Espresso con panna coffee'),
-(13, 'Long Black'),
-(14, 'Latte'),
-(15, 'Flat White'),
-(16, 'Cappuccino'),
-(17, 'Piccolo'),
-(18, 'Mocha'),
-(19, 'Caramel Macchiato'),
-(20, 'Dirty Coffee'),
-(21, 'Dalgona Coffee'),
-(22, 'Americano');
+(23, 'น้ำอัดลม'),
+(24, 'กาแฟ'),
+(25, 'เครื่องดื่มโซดา'),
+(26, 'นม'),
+(27, 'น้ำผลไม้');
 
 -- --------------------------------------------------------
 
@@ -172,7 +162,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `status`, `firstname`, `lastname`, `store`, `description`, `img_path`) VALUES
 (7, 'user@gmail.com', '$2y$10$BChw6lO9TBNlE0szK7TMoeIXl6GAf3sGDBbq67yv5A0.X9VeNeaL.', 1, 'Nattawat', 'Thungyen', 'BOMPaPerX', 'ขายทุกอย่าง', '106425d46bdff69QR.png'),
-(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', 0, 'Wanchana', 'Kaedmun', 'นายอาม', 'ขายกล้อง', '');
+(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', 1, 'Wanchana', 'Kaedmun', 'นายอาม', 'ขายกล้อง', ''),
+(9, '1@gmail.com', '$2y$10$PcQkgLevKKo1U4FTeALWa.4PkWHZ4c3mh.wUboF5CmcMvLye0Dxnu', 1, 'Nattawat', 'Thungyen', '123', '123', '106444fedde2dbcQR.png');
 
 --
 -- Indexes for dumped tables
@@ -228,31 +219,31 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `type_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

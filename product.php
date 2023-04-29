@@ -17,7 +17,7 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 
 $type_data = $connect->prepare("SELECT * FROM type");
 $type_data->execute();
-$row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);  
+$row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <body id="page-top">
@@ -48,14 +48,14 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                             <th width="35%" class="text-center">ชื่อ</th>
                                             <th width="30%" class="text-center">ประเภท</th>
                                             <th width="15%" class="text-center">ราคา</th>
-                                            <th width="10%" class="text-center">จำนวน</th>
+                                            <!-- <th width="10%" class="text-center">จำนวน</th> -->
                                             <th width="10%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         foreach ($row_product as $row) {
-                                            $quantity = $connect->prepare("SELECT SUM(quantity) as quantity FROM record WHERE product_id = '".$row['product_id']."'");
+                                            $quantity = $connect->prepare("SELECT SUM(quantity) as quantity FROM record WHERE product_id = '" . $row['product_id'] . "'");
                                             $quantity->execute();
                                             $row_quantity = $quantity->fetch(PDO::FETCH_ASSOC);
                                         ?>
@@ -63,7 +63,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <td class="text-center"><?= $row['name'] ?></td>
                                                 <td class="text-center"><?= $row['type'] ?></td>
                                                 <td class="text-center"><?= $row['price'] - $row['discount'] ?></td>
-                                                <td class="text-center"><?= isset($row_quantity['quantity']) ? $row_quantity['quantity'] : 0 ?></td>
+                                                <!-- <td class="text-center"><?= isset($row_quantity['quantity']) ? $row_quantity['quantity'] : 0 ?></td> -->
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -133,6 +133,13 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" required></textarea>
                         </div>
                     </div>
+                    <div class="form-floating mb-3">
+                        <img id="showpic" src="./img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
+                    </div>
+                    <div class="text-center">
+                        <input type="file" class="sr-only" id="preimg" name="preimg" accept="image/*" onchange="readURL(this);" style="display: none;">
+                    </div>
+                    <a onclick="$('#preimg').click();" class="m-2 mb-5 btn btn-primary d-block">เพิ่มรูปเครื่องดื่ม</a>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
@@ -147,7 +154,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="edit_product_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มประเภท</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">แก้ไขสินค้า</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -178,9 +185,16 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <label for="formGroupExampleInput">รายละเอียด</label>
                             <textarea class="form-control" name="description" id="description_edit" placeholder="รายละเอียด" style="height: 150px" required></textarea>
                         </div>
+                        <div class="form-floating mb-3">
+                            <img id="showpic1" src="./img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg1').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
+                        </div>
+                        <div class="text-center">
+                            <input type="file" class="sr-only" id="preimg1" name="preimg1" accept="image/*" onchange="readURL1(this);" style="display: none;">
+                        </div>
+                        <a onclick="$('#preimg1').click();" class="m-2 mb-5 btn btn-primary d-block">เพิ่มรูปเครื่องดื่ม</a>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="original_img()">ยกเลิก</button>
                         <button type="submit" class="btn btn-primary">บันทึก</button>
                     </div>
                 </form>
@@ -212,12 +226,12 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 
         $(document).ready(function() {
             $('#insert_product_form').submit(function(event) {
-                console.log($(this).serialize())
                 event.preventDefault();
+                var formData = new FormData(this);
                 $.ajax({
                     url: 'check/insert_product.php',
                     method: 'POST',
-                    data: $(this).serialize(),
+                    data: formData,
                     success: function(response) {
                         console.log(response)
                         if (response == 'success') {
@@ -244,17 +258,20 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     },
                     error: function(error) {
                         console.log(error)
-                    }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
                 });
             });
 
             $('#edit_product_form').submit(function(event) {
-                console.log($(this).serialize())
                 event.preventDefault();
+                var formData = new FormData(this);
                 $.ajax({
                     url: 'check/edit_product.php',
                     method: 'POST',
-                    data: $(this).serialize(),
+                    data: formData,
                     success: function(response) {
                         console.log(response)
                         if (response == 'success') {
@@ -281,7 +298,10 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     },
                     error: function(error) {
                         console.log(error)
-                    }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
                 });
             });
         });
@@ -301,6 +321,9 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     $("#discount_edit").val(res.discount);
                     $("#description_edit").val(res.description);
                     $("#product_id_edit").val(res.product_id);
+                    if (res.img_path != '') {
+                        $("#showpic1").attr("src", "./img/" + res.img_path);
+                    }
                     $("#edit_product").modal("show");
                 }
             });
@@ -363,6 +386,31 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     })
                 }
             });
+        }
+
+        function original_img() {
+            $("#showpic1").attr("src", "./img/add_image.png");
+        }
+    </script>
+    <script type="text/javascript">
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#showpic').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function readURL1(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#showpic1').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
     </script>
 </body>

@@ -9,50 +9,23 @@ if (!isset($_SESSION['user_id'])) {
 require 'include/connect.php';
 include 'include/header.php';
 
-if (!empty($_GET['month'])) {
-    $month = $_GET['month'];
-}
-
 if (!empty($_GET['year'])) {
     $year = $_GET['year'];
 }
 
-$m = '';
 $y = '';
-
-if (isset($month)) {
-    $m = $month;
-}
 
 if (isset($year)) {
     $y = $year;
 }
 
 $user_id = $_SESSION['user_id'];
-$report_data = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' GROUP BY product.product_id");
-if (isset($month) && isset($year)) {
-    $report_data = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY product.product_id");
-}
-if (!isset($month) && isset($year)) {
-    $report_data = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $year GROUP BY product.product_id");
+$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' GROUP BY record.no_receipt");
+if (isset($year)) {
+    $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
 }
 $report_data->execute();
 $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
-
-$months = array(
-    "มกราคม", // January
-    "กุมภาพันธ์", // February
-    "มีนาคม", // March
-    "เมษายน", // April
-    "พฤษภาคม", // May
-    "มิถุนายน", // June
-    "กรกฎาคม", // July
-    "สิงหาคม", // August
-    "กันยายน", // September
-    "ตุลาคม", // October
-    "พฤศจิกายน", // November
-    "ธันวาคม" // December
-);
 ?>
 
 <body id="page-top">
@@ -63,15 +36,9 @@ $months = array(
                 <?php include 'include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Report by Products</h1>
-                        <form method="GET" action="report_product.php">
+                        <h1 class="h3 mb-0 text-gray-800">Year Report</h1>
+                        <form method="GET" action="report_payment_year.php">
                             <div class="d-inline">
-                                <select class="form-select form-control-lg is-valid d-inline" name="month">
-                                    <option value="">เดือน</option>
-                                    <?php for ($i = 0; $i < 12; $i++) { ?>
-                                        <option value="<?= $i + 1 ?>" <?= $m == $i + 1 ? 'selected' : '' ?>><?= $months[$i] ?></option>
-                                    <?php } ?>
-                                </select>
                                 <select class="form-select form-control-lg is-valid d-inline" name="year" required>
                                     <option value="">ปี</option>
                                     <?php for ($i = 2023; $i <= 2037; $i++) { ?>
@@ -99,9 +66,10 @@ $months = array(
                                     <thead>
                                         <tr>
                                             <th width="10%" class="text-center">ลำดับ</th>
-                                            <th width="35%" class="text-center">ชื่อสินค้า</th>
-                                            <th width="35%" class="text-center">จำนวน</th>
-                                            <th width="20%" class="text-center">ยอดขาย</th>
+                                            <th width="30%" class="text-center">หมายเลขใบเสร็จ</th>
+                                            <th width="30%" class="text-center">วิธีชำระเงิน</th>
+                                            <th width="20%" class="text-center">ยอดรวม</th>
+                                            <th width="10%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -109,28 +77,36 @@ $months = array(
                                         $all_price = 0;
                                         $j = 1;
                                         foreach ($row_report as $row) {
-                                            $price = $connect->prepare("SELECT net_price, quantity FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '" . $row['product_id'] . "'");
-                                            if (isset($month) && isset($year)) {
-                                                $price = $connect->prepare("SELECT net_price, quantity FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '" . $row['product_id'] . "' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
-                                            }
-                                            if (!isset($month) && isset($year)) {
-                                                $price = $connect->prepare("SELECT net_price, quantity FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '" . $row['product_id'] . "' AND YEAR(timestamp) = $year");
-                                            }
+                                            $price = $connect->prepare("SELECT net_price, quantity FROM record WHERE no_receipt = '" . $row['no_receipt'] . "'");
                                             $price->execute();
                                             $row_price = $price->fetchAll(PDO::FETCH_ASSOC);
                                             $total_price = 0;
-                                            $total_quantity = 0;
                                             foreach ($row_price as $rp) {
                                                 $total_price += $rp['net_price'] * $rp['quantity'];
-                                                $total_quantity += $rp['quantity'];
                                             }
                                             $all_price += $total_price;
                                         ?>
                                             <tr>
                                                 <td class="text-center"><?= $j++ ?></td>
-                                                <td class="text-center"><?= $row['name'] ?></td>
-                                                <td class="text-center"><?= $total_quantity ?></td>
+                                                <td class="text-center"><?= $row['no_receipt'] ?></td>
+                                                <td class="text-center"><?= $row['method'] == 1 ? 'พร้อมเพย์' : 'เงินสด' ?></td>
                                                 <td class="text-center"><?= $total_price ?></td>
+                                                <td class="text-center">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                            ตัวเลือก
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" href="./detail.php?no_receipt=<?= $row['no_receipt'] ?>">ดูข้อมูล</a>
+                                                            <button class="dropdown-item" type="button" onclick="delete_data(<?= $row['no_receipt'] ?>)">ลบ</button>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php if (count($row_report) == 0) { ?>
+                                            <tr>
+                                                <td class="text-center" colspan="5">ไม่มีข้อมูล</td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -138,6 +114,7 @@ $months = array(
                                         <tr>
                                             <th colspan="3" class="text-center">ยอดขายรวม</th>
                                             <th class="text-center"><?= $all_price ?></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -164,6 +141,11 @@ $months = array(
         {
             var sheet_name = "excel_sheet"; /* กำหหนดชื่อ sheet ให้กับ excel โดยต้องไม่เกิน 31 ตัวอักษร */
             var elt = document.getElementById('Table'); /*กำหนดสร้างไฟล์ excel จาก table element ที่มี id ชื่อว่า myTable*/
+            let originalTable = elt.cloneNode(true);
+            let rows = elt.rows;
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].deleteCell(-1);
+            }
 
             /*------สร้างไฟล์ excel------*/
             var wb = XLSX.utils.table_to_book(elt, {
@@ -171,6 +153,56 @@ $months = array(
             });
             XLSX.writeFile(wb, 'report.xlsx'); //Download ไฟล์ excel จากตาราง html โดยใช้ชื่อว่า report.xlsx
 
+            elt.parentNode.replaceChild(originalTable, elt);
+        }
+
+        function delete_data(no_receipt) {
+            Swal.fire({
+                title: 'หมายเลขใบเสร็จ ' + no_receipt,
+                text: 'คุณต้องการลบใช่ไหม',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ลบ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'check/delete_data.php',
+                        method: 'POST',
+                        data: {
+                            no_receipt: no_receipt
+                        },
+                        success: function(response) {
+                            if (response == 'success') {
+                                Swal.fire({
+                                    title: 'สำเร็จ',
+                                    icon: 'success',
+                                    confirmButtonText: 'ตกลง',
+                                    confirmButtonColor: '#4e73df'
+                                }).then(function() {
+                                    location.reload();
+                                });
+                            }
+                            if (response == 'fail') {
+                                Swal.fire({
+                                        title: 'เกิดข้อผิดพลาด',
+                                        icon: 'error',
+                                        confirmButtonText: 'ตกลง',
+                                        confirmButtonColor: '#4e73df'
+                                    })
+                                    .then(function() {
+                                        location.reload();
+                                    });
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error)
+                        }
+                    });
+                }
+            })
         }
     </script>
 </body>

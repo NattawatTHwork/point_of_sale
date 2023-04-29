@@ -38,7 +38,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
+                                    <thead class="text-center">
                                         <tr>
                                             <th width="80%">ประเภท</th>
                                             <th width="20%">ตัวเลือก</th>

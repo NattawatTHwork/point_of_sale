@@ -140,7 +140,7 @@ if (isset($_GET['year'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                                จำนวนแก้ว (ต่อเดือน)
+                                                จำนวน (ต่อเดือน)
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
@@ -153,7 +153,7 @@ if (isset($_GET['year'])) {
                                                         $sum_item += $row['quantity'];
                                                     }
                                                     ?>
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $sum_item ?> แก้ว</div>
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><?= $sum_item ?></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@ if (isset($_GET['year'])) {
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                จำนวนแก้ว (ต่อปี)
+                                                จำนวน (ต่อปี)
                                             </div>
                                             <?php
                                             $item_year = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $year");
@@ -183,7 +183,7 @@ if (isset($_GET['year'])) {
                                                 $sum_item_year += $row['quantity'];
                                             }
                                             ?>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_item_year ?> แก้ว</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_item_year ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -212,7 +212,7 @@ if (isset($_GET['year'])) {
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">จำนวนแก้ว (ต่อเดือน)</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">จำนวน (ต่อเดือน)</h6>
                                 </div>
                                 <div class="card-body">
                                     <?php
@@ -251,7 +251,7 @@ if (isset($_GET['year'])) {
                             <!-- Project Card Example -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">จำนวนแก้ว (ต่อปี)</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">จำนวน (ต่อปี)</h6>
                                 </div>
                                 <div class="card-body">
                                     <?php
