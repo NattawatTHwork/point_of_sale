@@ -113,7 +113,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="form-group">
                         <label for="description">QR Code</label><br>
-                        <img src="" name="img_path" id="img_path" class="mx-auto d-block">
+                        <img src="" name="img_path" id="img_path" class="mx-auto d-block" width="400">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -200,7 +200,11 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 success: function(response) {
                     let res = JSON.parse(response);
                     var img = document.getElementById('img_path');
-                    img.setAttribute("src", '../img/'+res.img_path);
+                    if (res.img_path.length === 0) {
+                        img.setAttribute("src", '../img/no_image.jpg');
+                    } else {
+                        img.setAttribute("src", '../img/' + res.img_path);
+                    }
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
                     $("#store").val(res.store);
