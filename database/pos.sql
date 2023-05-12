@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2023 at 12:18 PM
+-- Generation Time: May 12, 2023 at 07:26 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -162,8 +162,9 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `status`, `firstname`, `lastname`, `store`, `description`, `img_path`) VALUES
 (7, 'user@gmail.com', '$2y$10$BChw6lO9TBNlE0szK7TMoeIXl6GAf3sGDBbq67yv5A0.X9VeNeaL.', 1, 'Nattawat', 'Thungyen', 'BOMPaPerX', 'ขายทุกอย่าง', '106425d46bdff69QR.png'),
-(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', 1, 'Wanchana', 'Kaedmun', 'นายอาม', 'ขายกล้อง', ''),
-(9, '1@gmail.com', '$2y$10$PcQkgLevKKo1U4FTeALWa.4PkWHZ4c3mh.wUboF5CmcMvLye0Dxnu', 1, 'Nattawat', 'Thungyen', '123', '123', '106444fedde2dbcQR.png');
+(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', 0, 'Wanchana', 'Kaedmun', 'นายอาม', 'ขายกล้อง', ''),
+(9, '1@gmail.com', '$2y$10$PcQkgLevKKo1U4FTeALWa.4PkWHZ4c3mh.wUboF5CmcMvLye0Dxnu', 1, 'Nattawat', 'Thungyen', '123', '123', '106444fedde2dbcQR.png'),
+(10, '62223604@g.cmru.ac.th', '$2y$10$.7cN/Zo.zSnIt.MZ81T9zuShPJM9pXfN4RUQL9Rs8zJWOQFNieXBi', 1, 'Wanchana', 'koedmun', 'Coffee in Love', '555', '10644e07c5054bb1501_1602_Z62_0571.jpg');
 
 --
 -- Indexes for dumped tables
@@ -243,7 +244,7 @@ ALTER TABLE `type`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
