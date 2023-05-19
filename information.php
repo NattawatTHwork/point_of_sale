@@ -12,6 +12,14 @@ $row = $check->fetch(PDO::FETCH_ASSOC);
 if ($row['status'] == 1) {
     header("location: index.php");
 }
+if (!empty($row['id_number'])) {
+    $idNumber = $row['id_number'];
+    $row['id_number'] = substr($idNumber, 0, 1) . '-' . substr($idNumber, 1, 4) . '-' . substr($idNumber, 5, 5) . '-' . substr($idNumber, 10, 2) . '-' . substr($idNumber, 12);
+}
+if (!empty($row['phone'])) {
+    $phone_Number = $row['phone'];
+    $row['phone'] = substr($phone_Number, 0, 2) . '-' . substr($phone_Number, 2, 4) . '-' . substr($phone_Number, 6);
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,6 +63,18 @@ if ($row['status'] == 1) {
                         <label for="lastname">นามสกุล</label>
                     </div>
                     <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="id_number" id="id_number" placeholder="หมายเลขบัตรประชาชน" value="<?= $row['id_number'] ?>" pattern=".{17,}" required />
+                        <label for="id_number">หมายเลขบัตรประชาชน</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="phone" id="phone" placeholder="เบอร์โทร" value="<?= $row['phone'] ?>" pattern=".{12,}" required />
+                        <label for="phone">เบอร์โทร</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="address" id="address" placeholder="ที่อยู่" value="<?= $row['address'] ?>" required />
+                        <label for="address">ที่อยู่</label>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="store" id="store" placeholder="ชื่อร้านค้า" value="<?= $row['store'] ?>" required />
                         <label for="store">ชื่อร้านค้า</label>
                     </div>
@@ -80,6 +100,43 @@ if ($row['status'] == 1) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
+            $('#id_number').on('input', function() {
+                var IDNumber = $(this).val().replace(/[^0-9]/g, ''); // Remove existing hyphens
+                if (IDNumber.length > 13) {
+                    IDNumber = IDNumber.slice(0, 13); // Limit to 13 digits
+                }
+                var formattedIDNumber = '';
+                for (var i = 0; i < IDNumber.length; i++) {
+                    if (i === 1 || i === 5 || i === 10 || i === 12) {
+                        formattedIDNumber += '-';
+                    }
+                    formattedIDNumber += IDNumber[i];
+                }
+                $(this).val(formattedIDNumber);
+            });
+
+            $('#phone').on('input', function() {
+                var phoneNumber = $(this).val().replace(/[^0-9]/g, ''); // Remove existing hyphens
+                if (phoneNumber.length > 10) {
+                    phoneNumber = phoneNumber.slice(0, 10); // Limit to 10 digits
+                }
+                var formattedNumber = '';
+                for (var i = 0; i < phoneNumber.length; i++) {
+                    if (i === 2 || i === 6) {
+                        formattedNumber += '-';
+                    }
+                    formattedNumber += phoneNumber[i];
+                }
+                $(this).val(formattedNumber);
+            });
+
+            $('form').on('submit', function() {
+                var idNumber = $('#id_number').val().replace(/-/g, ''); // Remove hyphens from ID number
+                var phoneNumber = $('#phone').val().replace(/-/g, ''); // Remove hyphens from phone number
+                $('#id_number').val(idNumber);
+                $('#phone').val(phoneNumber);
+            });
+
             $('#insert_information').submit(function(event) {
                 event.preventDefault();
                 var formData = new FormData(this);

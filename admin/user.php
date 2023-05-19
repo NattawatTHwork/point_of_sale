@@ -52,9 +52,9 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= $row['email'] ?></td>
                                                 <td><?= $row['store'] ?></td>
                                                 <?php if ($row['status'] == 0) { ?>
-                                                    <td class="text-danger">ใข้งานไม่ได้</td>
+                                                    <td class="text-danger">ปิดใช้งาน</td>
                                                 <?php } else { ?>
-                                                    <td class="text-success">ใช้งานได้</td>
+                                                    <td class="text-success">เปิดใช้งาน</td>
                                                 <?php } ?>
                                                 <td>
                                                     <div class="dropdown">
@@ -63,6 +63,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" type="button" onclick="get_user(<?= $row['user_id'] ?>)">ดูข้อมูล</button>
+                                                            <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูสินค้า</button>
                                                             <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button>
                                                         </div>
                                                     </div>
@@ -97,15 +98,27 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="firstname">ชื่อ</label>
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="ประเภท" disabled>
+                        <input type="text" class="form-control" name="firstname" id="firstname" disabled>
                     </div>
                     <div class="form-group">
                         <label for="lastname">นามสกุล</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="ประเภท" disabled>
+                        <input type="text" class="form-control" name="lastname" id="lastname" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_number">หมายเลขบัตรประชาชน</label>
+                        <input type="text" class="form-control" name="id_number" id="id_number" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">เบอร์โทร</label>
+                        <input type="text" class="form-control" name="phone" id="phone" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">ที่อยู่</label>
+                        <input type="text" class="form-control" name="address" id="address" disabled>
                     </div>
                     <div class="form-group">
                         <label for="store">ชื่อร้านค้า</label>
-                        <input type="text" class="form-control" name="store" id="store" placeholder="ประเภท" disabled>
+                        <input type="text" class="form-control" name="store" id="store" disabled>
                     </div>
                     <div class="form-group">
                         <label for="description">รายละเอียด</label>
@@ -115,6 +128,25 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                         <label for="description">QR Code</label><br>
                         <img src="" name="img_path" id="img_path" class="mx-auto d-block" width="400">
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="view_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลสินค้า</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
@@ -199,6 +231,15 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
+                    if (res.id_number) {
+                        var idNumber = res.id_number;
+                        var formattedIDNumber = idNumber.slice(0, 1) + '-' + idNumber.slice(1, 5) + '-' + idNumber.slice(5, 10) + '-' + idNumber.slice(10, 12) + '-' + idNumber.slice(12);
+                    }
+                    if (res.phone) {
+                        var phone = res.phone;
+                        var formattedPhone = phone.slice(0, 2) + '-' + phone.slice(2, 6) + '-' + phone.slice(6);
+                    }
+
                     var img = document.getElementById('img_path');
                     if (res.img_path.length === 0) {
                         img.setAttribute("src", '../img/no_image.jpg');
@@ -207,9 +248,63 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     }
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
+                    $("#id_number").val(formattedIDNumber);
+                    $("#phone").val(formattedPhone);
+                    $("#address").val(res.address);
                     $("#store").val(res.store);
                     $("#description").val(res.description);
                     $("#view_user").modal("show");
+                }
+            });
+        }
+
+        function get_product(user_id) {
+            $.ajax({
+                url: 'check/get_product.php',
+                type: "POST",
+                data: {
+                    user_id: user_id
+                },
+                success: function(response) {
+                    let res = JSON.parse(response);
+
+                    // Build table
+                    let table = $('<table>').addClass('table text-center'); // Add 'text-center' class to center-align the text
+                    let thead = $('<thead>');
+                    let tbody = $('<tbody>');
+
+                    // Create table header
+                    let headerRow = $('<tr>');
+                    headerRow.append($('<th>').text('ลำดับ'));
+                    headerRow.append($('<th>').text('สินค้า'));
+                    headerRow.append($('<th>').text('ราคาขาย'));
+                    thead.append(headerRow);
+                    table.append(thead);
+
+                    // Create table rows
+                    if (res.length === 0) {
+                        let noProductRow = $('<tr>');
+                        let noProductCell = $('<td colspan="3">').text('ไม่มีสินค้า');
+                        noProductRow.append(noProductCell);
+                        tbody.append(noProductRow);
+                    } else {
+                        var i = 1;
+                        res.forEach(function(rowData) {
+                            let row = $('<tr>');
+                            row.append($('<td>').text(i++));
+                            row.append($('<td>').text(rowData.name));
+                            let priceMinusDiscount = parseFloat(rowData.price) - parseFloat(rowData.discount);
+                            row.append($('<td>').text(priceMinusDiscount));
+                            tbody.append(row);
+                        });
+                    }
+                    table.append(tbody);
+
+                    // Clear modal body and add the table
+                    $('#view_product .modal-body').empty().append(table);
+
+                    // Show the modal
+                    $("#view_product").modal("show");
                 }
             });
         }

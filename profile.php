@@ -10,7 +10,26 @@ require 'include/connect.php';
 include 'include/header.php';
 
 $user_id = $_SESSION['user_id'];
-$user = $connect->prepare("SELECT * FROM user WHERE user_id = '$user_id'");
+$user = $connect->prepare("SELECT *,
+    CONCAT(
+        SUBSTRING(id_number, 1, 1),
+        '-',
+        SUBSTRING(id_number, 2, 4),
+        '-',
+        SUBSTRING(id_number, 6, 5),
+        '-',
+        SUBSTRING(id_number, 11, 2),
+        '-',
+        SUBSTRING(id_number, 13)
+    ) AS id_number, 
+    CONCAT(
+        SUBSTRING(phone, 1, 2),
+        '-',
+        SUBSTRING(phone, 5, 4),
+        '-',
+        SUBSTRING(phone, 7)
+    ) AS phone 
+FROM user WHERE user_id = '$user_id'");
 $user->execute();
 $row_user = $user->fetch(PDO::FETCH_ASSOC);
 
@@ -36,6 +55,21 @@ $row_user = $user->fetch(PDO::FETCH_ASSOC);
                                             <td height="60px" class="font-weight-bold">ชื่อผู้ใช้งาน</td>
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td><?= $row_user['firstname'].' '.$row_user['lastname'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="60px" class="font-weight-bold">หมายเลขบัตรประชาชน</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><?= $row_user['id_number'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="60px" class="font-weight-bold">เบอร์โทร</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><?= $row_user['phone'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="60px" class="font-weight-bold">ที่อยู่</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><?= $row_user['address'] ?></td>
                                         </tr>
                                         <tr>
                                             <td height="60px" class="font-weight-bold">ชื่อร้านค้า</td>

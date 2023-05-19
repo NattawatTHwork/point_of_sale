@@ -54,12 +54,12 @@ if (isset($_GET['year'])) {
                             <div class="d-inline">
                                 <select class="form-select form-control-lg is-valid d-inline" name="month" required>
                                     <?php for ($i = 0; $i < 12; $i++) { ?>
-                                        <option value="<?= $i + 1 ?>"><?= $months[$i] ?></option>
+                                        <option value="<?= $i + 1 ?>" <?= $month == $i + 1 ? 'selected' : '' ?>><?= $months[$i] ?></option>
                                     <?php } ?>
                                 </select>
                                 <select class="form-select form-control-lg is-valid d-inline" name="year">
                                     <?php for ($i = 2023; $i <= 2037; $i++) { ?>
-                                        <option value="<?= $i ?>"><?= $i + 543 ?></option>
+                                        <option value="<?= $i ?>" <?= $year == $i ? 'selected' : '' ?>><?= $i + 543 ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
