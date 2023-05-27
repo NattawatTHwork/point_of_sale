@@ -10,8 +10,31 @@ require '../include/connect.php';
 include '../include/header.php';
 
 $user_data = $connect->prepare("SELECT * FROM user");
+if (isset($_GET['status'])) {
+    if ($_GET['status'] == 'active' || $_GET['status'] == 'inactive') {
+        if ($_GET['status'] == 'active') {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+        $user_data = $connect->prepare("SELECT * FROM user WHERE status = '$status'");
+    }
+
+    if ($_GET['status'] == 'member' || $_GET['status'] == 'trial' || $_GET['status'] == 'wait') {
+        if ($_GET['status'] == 'member') {
+            $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id GROUP BY member.user_id HAVING count > 1");
+        } elseif ($_GET['status'] == 'trial') {
+            $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id GROUP BY member.user_id HAVING count = 1");
+        } elseif ($_GET['status'] == 'wait') {
+            $user_data = $connect->prepare("SELECT * FROM user WHERE user_id NOT IN (SELECT user_id FROM member)");
+        }
+    }
+}
 $user_data->execute();
 $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
+// echo '<pre>';
+// print_r($row_user);
+// echo '</pre>';
 
 ?>
 
@@ -29,7 +52,20 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">ตารางรายชื่อสมาชิก</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                ตารางรายชื่อ
+                                <?php
+                                if (isset($_GET['status'])) {
+                                    if ($_GET['status'] == 'member') {
+                                        echo 'สมาชิก';
+                                    } elseif ($_GET['status'] == 'trial') {
+                                        echo 'ทดลองใช้งาน';
+                                    } elseif ($_GET['status'] == 'wait') {
+                                        echo 'รอการอนุมัติ';
+                                    }
+                                }
+                                ?>
+                            </h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -64,7 +100,10 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" type="button" onclick="get_user(<?= $row['user_id'] ?>)">ดูข้อมูล</button>
                                                             <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูสินค้า</button>
-                                                            <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button>
+                                                            <!-- <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button> -->
+                                                            <a class="dropdown-item" type="button" href="manage_user.php?user_id=<?= $row['user_id'] ?>">ประวัติการใช้บริการ</a>
+                                                            <a class="dropdown-item" type="button" href="report_payment_date.php?user_id=<?= $row['user_id'] ?>">รายงานยรายวัน</a>
+                                                            <a class="dropdown-item" type="button" href="report_payment_month.php?user_id=<?= $row['user_id'] ?>">รายงานรายเดือน</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -97,6 +136,14 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="email">อีเมล</label>
+                        <input type="text" class="form-control" name="email" id="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน</label>
+                        <input type="text" class="form-control" name="password" id="password" disabled>
+                    </div>
+                    <div class="form-group">
                         <label for="firstname">ชื่อ</label>
                         <input type="text" class="form-control" name="firstname" id="firstname" disabled>
                     </div>
@@ -111,6 +158,10 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     <div class="form-group">
                         <label for="phone">เบอร์โทร</label>
                         <input type="text" class="form-control" name="phone" id="phone" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="line">ไลน์</label>
+                        <input type="text" class="form-control" name="line" id="line" disabled>
                     </div>
                     <div class="form-group">
                         <label for="address">ที่อยู่</label>
@@ -246,10 +297,13 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     } else {
                         img.setAttribute("src", '../img/' + res.img_path);
                     }
+                    $("#email").val(res.email);
+                    $("#password").val(res.password_view);
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
                     $("#id_number").val(formattedIDNumber);
                     $("#phone").val(formattedPhone);
+                    $("#line").val(res.line);
                     $("#address").val(res.address);
                     $("#store").val(res.store);
                     $("#description").val(res.description);

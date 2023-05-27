@@ -94,6 +94,14 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
+                        <label for="email">อีเมล</label>
+                        <input type="text" class="form-control" name="email" id="email" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน</label>
+                        <input type="text" class="form-control" name="password" id="password" disabled>
+                    </div>
+                    <div class="form-group">
                         <label for="firstname">ชื่อ</label>
                         <input type="text" class="form-control" name="firstname" id="firstname" placeholder="ประเภท" disabled>
                     </div>
@@ -185,6 +193,8 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
+                    $("#email").val(res.email);
+                    $("#password").val(res.password_view);
                     $("#firstname").val(res.firstname);
                     $("#lastname").val(res.lastname);
                     $("#view_admin").modal("show");

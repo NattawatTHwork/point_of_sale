@@ -72,8 +72,7 @@ if (isset($_GET['year'])) {
                     <!-- Content Row -->
                     <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-6 col-md-6 mb-4" onclick="active()">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -94,10 +93,9 @@ if (isset($_GET['year'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- <div class="col-xl-6 col-md-6 mb-4" onclick="inactive()">
                             <div class="card border-left-danger shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -118,52 +116,73 @@ if (isset($_GET['year'])) {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> -->
 
-                    <!-- Content Row -->
-                    <div class="row">
-                        <?php
-                        $user = $connect->prepare("SELECT * FROM user WHERE status = 1");
-                        $user->execute();
-                        $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
-                        ?>
-                        <!-- Content Column -->
-                        <div class="col-12 mb-4">
-
-                            <!-- Project Card Example -->
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">ยอดขายร้านค้า</h6>
-                                </div>
+                        <div class="col-xl-12 col-md-12 mb-4" onclick="member()">
+                            <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th width="60%">ร้านค้า</th>
-                                                    <th width="40%">ยอดขายรายเดือน</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php 
-                                                foreach ($row_user as $row) {
-                                                    $user_id = $row['user_id'];
-                                                    $sales = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE())");
-                                                    $sales->execute();
-                                                    $row_sales = $sales->fetchAll(PDO::FETCH_ASSOC);
-                                                    $total_price = 0;
-                                                    foreach ($row_sales as $rows) {
-                                                        $total_price += $rows['quantity'] * $rows['net_price']; 
-                                                    }
-                                                    ?>
-                                                    <tr>
-                                                        <td><?= $row['store'] ?></td>
-                                                        <td><?= $total_price ?></td>
-                                                    </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                สมาชิก
+                                            </div>
+                                            <?php
+                                            $count = $connect->prepare("SELECT user_id, COUNT(*) as count FROM member GROUP BY user_id HAVING count > 1");
+                                            $count->execute();
+                                            $count_user_id = $count->rowCount();
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-md-12 mb-4" onclick="trial()">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                ทดลองใช้งาน
+                                            </div>
+                                            <?php
+                                            $count = $connect->prepare("SELECT user_id, COUNT(*) as count FROM member GROUP BY user_id HAVING count = 1");
+                                            $count->execute();
+                                            $count_user_id = $count->rowCount();
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-md-12 mb-4" onclick="wait()">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                รอการอนุมัติ
+                                            </div>
+                                            <?php
+                                            $count = $connect->prepare("SELECT COUNT(*) as count FROM user LEFT JOIN member ON user.user_id = member.user_id WHERE member.user_id IS NULL");
+                                            $count->execute();
+                                            $row = $count->fetch(PDO::FETCH_ASSOC);
+                                            $count_user_id = $row['count'];
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,6 +196,28 @@ if (isset($_GET['year'])) {
     <?php include '../include/scroll.php'; ?>
     <?php include '../include/modal.php'; ?>
     <?php include '../include/js.php'; ?>
+
+    <script>
+        function active() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=active";
+        }
+
+        function inactive() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=inactive";
+        }
+
+        function member() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member";
+        }
+
+        function trial() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=trial";
+        }
+
+        function wait() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=wait";
+        }
+    </script>
 </body>
 
 </html>

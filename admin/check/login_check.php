@@ -10,6 +10,18 @@ $check_email->bindParam(":email", $email);
 $check_email->execute();
 $row = $check_email->fetch(PDO::FETCH_ASSOC);
 
+$all_member = $connect->prepare("SELECT * FROM member WHERE (user_id, approve_date) IN (SELECT user_id, MAX(approve_date) FROM member GROUP BY user_id)");
+$all_member->execute();
+$row_all_member = $all_member->fetchAll(PDO::FETCH_ASSOC);
+
+$current_date = date('Y-m-d');
+foreach ($row_all_member as $rows) {
+    if (strtotime($current_date) > strtotime($rows['approve_date'] . ' +1 month')) {
+        $uid = $rows['user_id'];
+        $update_status = $connect->query("UPDATE user SET status = '0' WHERE user_id = '$uid'");
+    }
+}
+
 if($check_email->rowCount() > 0){
     if (password_verify($password, $row['password'])) {
         $_SESSION['admin_id'] = $row['admin_id'];

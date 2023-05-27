@@ -71,7 +71,7 @@
         </a>
     </li>
 
-    <li class="nav-item active">
+    <!-- <li class="nav-item active">
         <a class="nav-link" href="report_payment_year.php">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
                 <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
@@ -79,7 +79,7 @@
             </svg>
             <span>Year Report</span>
         </a>
-    </li>
+    </li> -->
 
     <!-- <li class="nav-item active">
         <a class="nav-link" href="report_user.php">

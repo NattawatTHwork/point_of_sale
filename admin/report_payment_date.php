@@ -47,11 +47,15 @@ if (isset($year)) {
 }
 
 $row_report = [];
+$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id GROUP BY record.no_receipt");
 if (isset($user_id) && isset($date) && isset($month) && isset($year)) {
     $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $date AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
-    $report_data->execute();
-    $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
+} elseif (isset($user_id)) {
+    $currentDate = date('d');
+    $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = '$currentDate' AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE()) GROUP BY record.no_receipt");
 }
+$report_data->execute();
+$row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
 
 $user = $connect->prepare("SELECT * FROM user");
 $user->execute();
