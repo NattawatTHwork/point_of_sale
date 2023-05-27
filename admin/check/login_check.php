@@ -16,7 +16,7 @@ $row_all_member = $all_member->fetchAll(PDO::FETCH_ASSOC);
 
 $current_date = date('Y-m-d');
 foreach ($row_all_member as $rows) {
-    if (strtotime($current_date) > strtotime($rows['approve_date'] . ' +1 month')) {
+    if (strtotime($current_date) > strtotime($rows['approve_date'] . ' +1 month +5 days')) {
         $uid = $rows['user_id'];
         $update_status = $connect->query("UPDATE user SET status = '0' WHERE user_id = '$uid'");
     }

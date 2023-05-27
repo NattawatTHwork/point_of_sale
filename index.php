@@ -17,6 +17,15 @@ $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 $qr_code = $connect->prepare("SELECT img_path FROM user WHERE user_id = '$user_id'");
 $qr_code->execute();
 $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
+
+$date = $connect->prepare("SELECT * FROM member WHERE user_id = '$user_id' ORDER BY member_id DESC");
+$date->execute();
+$rows = $date->fetch(PDO::FETCH_ASSOC);
+
+$nextMonthDate = strtotime(date('Y-m-d', strtotime($rows['approve_date'] . ' +1 month')));
+$todayDate = strtotime(date('Y-m-d'));
+$finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'));
+
 ?>
 
 <style>
@@ -98,7 +107,28 @@ $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
                 </div>
                 <input type="hidden" class="form-control" name="product_id" id="product_id_edit" placeholder="ประเภท">
                 <div class="modal-body">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary" onclick="submitConfirmForm()">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="modal fade" id="popupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">แจ้งเตือน</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <input type="hidden" class="form-control" name="product_id" id="product_id_edit" placeholder="ประเภท">
+                <div class="modal-body">
+                    <h5 class="text-center">การใช้งานของคุณหมดแล้ว<br>กรุณาชำระค่าบริการก่อน <?= $finalDate ?></h5>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -273,6 +303,10 @@ $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
                     })
                 }
             });
+
+            if (<?= $nextMonthDate ?> < <?= $todayDate ?>) {
+                $("#popupModal").modal("show");
+            }
         });
     </script>
 </body>
