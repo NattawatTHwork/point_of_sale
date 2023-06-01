@@ -78,7 +78,7 @@ $i = 1;
                                                 $fee = $total_price * 0.02;
                                                 ?>
                                                 <td><?= $i == 2 ? 'ทดลองใช้งาน' : $fee ?></td>
-                                                <td><button type="button" class="btn btn-primary" onclick="view(<?= $row['member_id'] ?>)" <?= $i == 2 ? 'disabled' : '' ?>>ดูหลักฐาน</button></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="view(<?= $row['member_id'] ?>)" <?= $i == 2 ? 'style="display: none;"' : '' ?> <?= empty($row['img_path']) ? 'disabled' : '' ?>>ดูหลักฐาน</button></td>
                                             </tr>
                                         <?php
                                         }
@@ -357,7 +357,7 @@ $i = 1;
                 url: 'check/manager_user.php',
                 type: "POST",
                 data: {
-                    action : 'image',
+                    action: 'image',
                     member_id: member_id
                 },
                 success: function(response) {
@@ -372,6 +372,12 @@ $i = 1;
                 }
             });
         }
+
+        // $('#dataTable').DataTable({
+        //     order: [
+        //         [1, 'desc']
+        //     ] // Sort by the second column in descending order
+        // })
     </script>
 </body>
 

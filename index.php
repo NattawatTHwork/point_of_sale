@@ -18,13 +18,21 @@ $qr_code = $connect->prepare("SELECT img_path FROM user WHERE user_id = '$user_i
 $qr_code->execute();
 $row_qr_code = $qr_code->fetch(PDO::FETCH_ASSOC);
 
-$date = $connect->prepare("SELECT * FROM member WHERE user_id = '$user_id' ORDER BY member_id DESC");
-$date->execute();
-$rows = $date->fetch(PDO::FETCH_ASSOC);
+$nextMonthDate = 0;
+$todayDate = 0;
+$member_count = $connect->prepare("SELECT * FROM member WHERE user_id = '$user_id'");
+$member_count->execute();
+$row_member_count = $member_count->fetchAll(PDO::FETCH_ASSOC);
+$count = count($row_member_count);
+if ($count > 1) {
+    $date = $connect->prepare("SELECT * FROM member WHERE user_id = '$user_id' ORDER BY member_id DESC");
+    $date->execute();
+    $rows = $date->fetch(PDO::FETCH_ASSOC);
 
-$nextMonthDate = strtotime(date('Y-m-d', strtotime($rows['approve_date'] . ' +1 month')));
-$todayDate = strtotime(date('Y-m-d'));
-$finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'));
+    $nextMonthDate = strtotime(date('Y-m-d', strtotime($rows['approve_date'] . ' +1 month')));
+    $todayDate = strtotime(date('Y-m-d'));
+    $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'));
+}
 
 ?>
 
@@ -107,7 +115,7 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                 </div>
                 <input type="hidden" class="form-control" name="product_id" id="product_id_edit" placeholder="ประเภท">
                 <div class="modal-body">
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
@@ -132,7 +140,7 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary" onclick="submitConfirmForm()">ยืนยัน</button>
+                    <a class="btn btn-primary" href="subscribe.php">ยืนยัน</a>
                 </div>
             </div>
         </div>
@@ -214,6 +222,8 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                         title: 'เลือกวิธีชำระเงิน',
                         icon: 'question',
                         showCancelButton: true,
+                        confirmButtonColor: '#4e73df',
+                        cancelButtonColor: '#4e73df',
                         confirmButtonText: 'พร้อมเพย์',
                         cancelButtonText: 'เงินสด',
                     }).then((result) => {
@@ -225,6 +235,7 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                                 imageWidth: 300,
                                 imageAlt: 'Custom image',
                                 showCancelButton: true,
+                                confirmButtonColor: '#4e73df',
                                 confirmButtonText: 'เสร็จสิ้น',
                                 cancelButtonText: 'ยกเลิก',
                             }).then((result) => {
@@ -236,17 +247,22 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                                         method: 'POST',
                                         data: data,
                                         success: function(response) {
-                                            console.log(response)
-                                            if (response == 'success') {
+                                            if (response != 'fail') {
                                                 Swal.fire({
-                                                        title: 'สำเร็จ',
-                                                        icon: 'success',
-                                                        confirmButtonText: 'ตกลง',
-                                                        confirmButtonColor: '#4e73df'
-                                                    })
-                                                    .then(function() {
+                                                    title: 'คุณต้องการพิมพ์ใบเสร็จไหม',
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#4e73df',
+                                                    cancelButtonColor: '#e74a3b',
+                                                    confirmButtonText: 'พิมพ์',
+                                                    cancelButtonText: 'ยกเลิก'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = "/detail.php?no_receipt=" + response;
+                                                    } else {
                                                         location.reload();
-                                                    });
+                                                    }
+                                                })
                                             }
                                             if (response == 'fail') {
                                                 Swal.fire({
@@ -282,8 +298,22 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                                         method: 'POST',
                                         data: data,
                                         success: function(response) {
-                                            if (response == 'success') {
-                                                location.reload();
+                                            if (response != 'fail') {
+                                                Swal.fire({
+                                                    title: 'คุณต้องการพิมพ์ใบเสร็จไหม',
+                                                    icon: 'warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#4e73df',
+                                                    cancelButtonColor: '#e74a3b',
+                                                    confirmButtonText: 'พิมพ์',
+                                                    cancelButtonText: 'ยกเลิก'
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = "/detail.php?no_receipt=" + response;
+                                                    } else {
+                                                        location.reload();
+                                                    }
+                                                })
                                             }
                                             if (response == 'fail') {
                                                 Swal.fire({
@@ -304,7 +334,7 @@ $finalDate = date('d-m-Y', strtotime($rows['approve_date'] . ' +1 month +5 days'
                 }
             });
 
-            if (<?= $nextMonthDate ?> < <?= $todayDate ?>) {
+            if ((<?= $nextMonthDate ?> < <?= $todayDate ?>) && (<?= $count ?> > 1)) {
                 $("#popupModal").modal("show");
             }
         });

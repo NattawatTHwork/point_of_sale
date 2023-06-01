@@ -37,6 +37,10 @@ if (isset($_SESSION['user_id'])) {
                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                         โปรไฟล์
                     </a>
+                    <a class="dropdown-item" href="history.php">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        ประวัติการใช้บริการ
+                    </a>
                 <?php } ?>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

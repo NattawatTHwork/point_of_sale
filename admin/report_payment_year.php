@@ -180,8 +180,8 @@ $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
                 text: 'คุณต้องการลบใช่ไหม',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#4e73df',
+                cancelButtonColor: '#e74a3b',
                 confirmButtonText: 'ลบ',
                 cancelButtonText: 'ยกเลิก'
             }).then((result) => {

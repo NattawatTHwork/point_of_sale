@@ -37,6 +37,19 @@ if (isset($_GET['year'])) {
 } else {
     $year = 'YEAR(CURRENT_DATE())';
 }
+
+$current_date = date("j F Y", strtotime("now", strtotime("+7 hours")));
+$thai_month_names = array(
+    'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+    'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+);
+$month_number = date('n', strtotime($current_date));
+$thai_month = $thai_month_names[$month_number - 1];
+
+$date_obj = date_create($current_date);
+date_modify($date_obj, "+543 years");
+$current_date = date_format($date_obj, "j $thai_month Y");
+$today = date('Y-m-d');
 ?>
 
 <body id="page-top">
@@ -74,6 +87,62 @@ if (isset($_GET['year'])) {
 
                     <!-- Content Row -->
                     <div class="row">
+
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                ยอดการชำระพร้อมเพย์ <?= $current_date ?>
+                                            </div>
+                                            <?php
+                                            $promptpay = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND method = 1 AND DATE_FORMAT(timestamp, '%d') = DAY(CURDATE()) AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE())");
+                                            $promptpay->execute();
+                                            $row_promptpay = $promptpay->fetchAll(PDO::FETCH_ASSOC);
+                                            $sum_promptpay = 0;
+                                            foreach ($row_promptpay as $row) {
+                                                $sum = $row['quantity'] * $row['net_price'];
+                                                $sum_promptpay += $sum;
+                                            }
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_promptpay ?> บาท</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                ยอดการชำระเงินสด <?= $current_date ?>
+                                            </div>
+                                            <?php
+                                            $cash = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND method = 0 AND DATE_FORMAT(timestamp, '%d') = DAY(CURDATE()) AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE())");
+                                            $cash->execute();
+                                            $row_cash = $cash->fetchAll(PDO::FETCH_ASSOC);
+                                            $sum_cash = 0;
+                                            foreach ($row_cash as $row) {
+                                                $sum = $row['quantity'] * $row['net_price'];
+                                                $sum_cash += $sum;
+                                            }
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $sum_cash ?> บาท</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">

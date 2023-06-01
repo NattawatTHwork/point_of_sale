@@ -37,37 +37,60 @@
     }
 </style>
 
-<div class="pdpa-popup">
-    <p>เว็บไซต์นี้ใช้คุกกี้เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด โดยเราใช้คุกกี้และนโยบายความเป็นส่วนตัวของเรา โปรดดูข้อมูลเพิ่มเติมใน<a href="privacy_policy.php" style="color: #4e73df; text-decoration: none;">นโยบายความเป็นส่วนตัว</a></p>
-    <button onclick="acceptPDPA()">ยอมรับ</button>
+<div id="cookieNotice" class="pdpa-popup">
+    <p>เว็บไซต์นี้ใช้คุกกี้เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด โดยเราใช้คุกกี้และนโยบายความเป็นส่วนตัวของเรา โปรดดูข้อมูลเพิ่มเติมใน เว็บไซต์นี้ใช้คุกกี้เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด โดยเราใช้คุกกี้และนโยบายความเป็นส่วนตัวของเรา โปรดดูข้อมูลเพิ่มเติมใน<a href="privacy_policy.php">นโยบายความเป็นส่วนตัว</a>ของเรา</p>
+    <button type="button" onclick="acceptCookieConsent()">ยอมรับ</button>
 </div>
 
 <script>
-    function acceptPDPA() {
-        // Set the 'pdpa_accepted' cookie with a value of 'true' that expires in 30 days
-        document.cookie = "pdpa_accepted=true; expires=" + new Date(new Date().getTime() + (86400 * 30 * 1000)).toUTCString();
-
-        // Hide the privacy policy popup
-        document.querySelector('.pdpa-popup').style.display = 'none';
+    // Create cookie
+    function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
 
-    // Check if the consent has been accepted from the cookie
-    function checkPDPAConsent() {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            if (cookie.indexOf('pdpa_accepted=') === 0) {
-                return true;
+    // Delete cookie
+    function deleteCookie(cname) {
+        const d = new Date();
+        d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+        let expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=;" + expires + ";path=/";
+    }
+
+    // Read cookie
+    function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
             }
         }
-        return false;
+        return "";
     }
 
-    // Show the privacy policy popup only if consent has not been accepted
-    if (!checkPDPAConsent()) {
-        var pdpaPopup = document.createElement('div');
-        pdpaPopup.className = 'pdpa-popup';
-        pdpaPopup.innerHTML = '<p>เว็บไซต์นี้ใช้คุกกี้เพื่อให้คุณได้รับประสบการณ์ที่ดีที่สุด โดยเราใช้คุกกี้และนโยบายความเป็นส่วนตัวของเรา โปรดดูข้อมูลเพิ่มเติมใน<a href="privacy_policy.php" style="color: #4e73df; text-decoration: none;">นโยบายความเป็นส่วนตัว</a></p><button onclick="acceptPDPA()" style="background-color: #4e73df;">ยอมรับ</button>';
-        document.body.appendChild(pdpaPopup);
+    function closepopup() {
+        document.getElementById("cookieNotice").style.display = "none";
+    }
+
+    // Set cookie consent
+    function acceptCookieConsent() {
+        deleteCookie('user_cookie_consent');
+        setCookie('user_cookie_consent', 1, 30);
+        document.getElementById("cookieNotice").style.display = "none";
+    }
+
+    let cookie_consent = getCookie("user_cookie_consent");
+    if (cookie_consent != "") {
+        document.getElementById("cookieNotice").style.display = "none";
+    } else {
+        document.getElementById("cookieNotice").style.display = "block";
     }
 </script>

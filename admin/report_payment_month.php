@@ -43,7 +43,7 @@ if (isset($user_id) && isset($month) && isset($year)) {
     $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
 } elseif (isset($user_id)) {
     $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE()) GROUP BY record.no_receipt");
-}  
+}
 $report_data->execute();
 $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -213,8 +213,8 @@ $months = array(
                 text: 'คุณต้องการลบใช่ไหม',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#4e73df',
+                cancelButtonColor: '#e74a3b',
                 confirmButtonText: 'ลบ',
                 cancelButtonText: 'ยกเลิก'
             }).then((result) => {

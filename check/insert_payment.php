@@ -37,7 +37,7 @@ if (isset($_SESSION['user_id'])) {
     $insert_payment->bindParam(":timestamp", $timestamp);
     $insert_payment->execute();
     if ($insert_payment && $insert_record) {
-        echo 'success';
+        echo $no_receipt;
         exit();
     } else {
         echo 'fail';
