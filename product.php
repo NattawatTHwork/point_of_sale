@@ -31,14 +31,14 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                         <h1 class="h3 mb-0 text-gray-800">Products</h1>
                         <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท</a> -->
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insert_product">
-                            <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มสินค้า
+                            <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มเครื่องดื่ม
                         </button>
                     </div>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">ตารางสินค้า</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">ตารางเครื่องดื่ม</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -101,16 +101,16 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="insert_product_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มสินค้า</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มเครื่องดื่ม</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <!-- <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="ชื่อสินค้า" value="<?= $_SESSION['user_id'] ?>" required> -->
+                    <!-- <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="ชื่อเครื่องดื่ม" value="<?= $_SESSION['user_id'] ?>" required> -->
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="formGroupExampleInput">ชื่อสินค้า</label>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="ชื่อสินค้า" required>
+                            <label for="formGroupExampleInput">ชื่อเครื่องดื่ม</label>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="ชื่อเครื่องดื่ม" required>
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput">ประเภท</label>
@@ -154,7 +154,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="edit_product_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">แก้ไขสินค้า</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">แก้ไขเครื่องดื่ม</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -162,8 +162,8 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     <input type="hidden" class="form-control" name="product_id" id="product_id_edit" placeholder="ประเภท">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="formGroupExampleInput">ชื่อสินค้า</label>
-                            <input type="text" class="form-control" name="name" id="name_edit" placeholder="ชื่อสินค้า" required>
+                            <label for="formGroupExampleInput">ชื่อเครื่องดื่ม</label>
+                            <input type="text" class="form-control" name="name" id="name_edit" placeholder="ชื่อเครื่องดื่ม" required>
                         </div>
                         <div class="form-group">
                             <label for="formGroupExampleInput">ประเภท</label>

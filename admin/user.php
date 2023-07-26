@@ -99,7 +99,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" type="button" onclick="get_user(<?= $row['user_id'] ?>)">ดูข้อมูล</button>
-                                                            <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูสินค้า</button>
+                                                            <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูเครื่องดื่ม</button>
                                                             <!-- <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button> -->
                                                             <a class="dropdown-item" type="button" href="manage_user.php?user_id=<?= $row['user_id'] ?>">ประวัติการใช้บริการ</a>
                                                             <a class="dropdown-item" type="button" href="report_payment_date.php?user_id=<?= $row['user_id'] ?>">รายงานยรายวัน</a>
@@ -129,7 +129,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลร้านค้า</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -191,7 +191,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลสินค้า</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลเครื่องดื่ม</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -211,7 +211,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="edit_status_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">ข้อมูลร้านค้า</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -330,7 +330,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     // Create table header
                     let headerRow = $('<tr>');
                     headerRow.append($('<th>').text('ลำดับ'));
-                    headerRow.append($('<th>').text('สินค้า'));
+                    headerRow.append($('<th>').text('เครื่องดื่ม'));
                     headerRow.append($('<th>').text('ราคาขาย'));
                     thead.append(headerRow);
                     table.append(thead);
@@ -338,7 +338,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     // Create table rows
                     if (res.length === 0) {
                         let noProductRow = $('<tr>');
-                        let noProductCell = $('<td colspan="3">').text('ไม่มีสินค้า');
+                        let noProductCell = $('<td colspan="3">').text('ไม่มีเครื่องดื่ม');
                         noProductRow.append(noProductCell);
                         tbody.append(noProductRow);
                     } else {

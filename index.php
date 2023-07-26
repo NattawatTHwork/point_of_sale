@@ -170,7 +170,7 @@ if ($count > 1) {
 
             if (tableHTML !== '') {
                 var tableCode = '<table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">';
-                tableCode += '<thead><tr><th>ชื่อสินค้า</th><th>จำนวน</th><th>ราคา</th></tr></thead>';
+                tableCode += '<thead><tr><th>ชื่อเครื่องดื่ม</th><th>จำนวน</th><th>ราคา</th></tr></thead>';
                 tableCode += '<tbody>' + tableHTML + '</tbody>';
                 tableCode += '<tfoot><tr><th colspan="2">ราคารวม</th><th>' + total_price + '</th></tr></tfoot>';
                 tableCode += '</table>';

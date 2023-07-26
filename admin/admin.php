@@ -87,7 +87,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ใช้งาน</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">ข้อมูลผู้ดูแลระบบ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

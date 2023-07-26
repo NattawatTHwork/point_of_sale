@@ -154,7 +154,7 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
 
         //             const headerRow = document.createElement('tr');
         //             const header1 = document.createElement('th');
-        //             header1.textContent = 'ชื่อสินค้า';
+        //             header1.textContent = 'ชื่อเครื่องดื่ม';
         //             header1.style.width = '30%';
         //             header1.classList.add('text-center');
         //             const header2 = document.createElement('th');

@@ -57,7 +57,7 @@ $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
                                             <th colspan="3"></th>
                                         </tr>
                                         <tr>
-                                            <th>ชื่อสินค้า</th>
+                                            <th>ชื่อเครื่องดื่ม</th>
                                             <th>ราคา</th>
                                             <th>จำนวน</th>
                                         </tr>

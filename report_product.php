@@ -99,7 +99,7 @@ $months = array(
                                     <thead>
                                         <tr>
                                             <th width="10%" class="text-center">ลำดับ</th>
-                                            <th width="35%" class="text-center">ชื่อสินค้า</th>
+                                            <th width="35%" class="text-center">ชื่อเครื่องดื่ม</th>
                                             <th width="35%" class="text-center">จำนวน</th>
                                             <th width="20%" class="text-center">ยอดขาย</th>
                                         </tr>

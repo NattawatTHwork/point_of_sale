@@ -38,7 +38,7 @@ if ($row['status'] == 1) {
 
 <body>
     <div>
-        <button type="button" class="btn btn-danger float-end m-3">ออกจากระบบ</button>
+        <a href="./check/logout.php" type="button" class="btn btn-danger float-end m-3">ออกจากระบบ</a>
     </div>
     <div class="container-sm w-50" style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
         <div>

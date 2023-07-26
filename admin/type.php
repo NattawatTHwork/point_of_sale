@@ -107,7 +107,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             <div class="modal-content">
                 <form id="edit_type_form">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">เพิ่มประเภท</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">แก้ไขประเภท</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
