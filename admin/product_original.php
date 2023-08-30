@@ -3,14 +3,14 @@
 
 <?php
 session_start();
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['admin_id'])) {
     header("location: login.php");
 }
-require 'include/connect.php';
-include 'include/header.php';
+require '../include/connect.php';
+include '../include/header.php';
 
-$user_id = $_SESSION['user_id'];
-$product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id'");
+$user_id = $_SESSION['admin_id'];
+$product_data = $connect->prepare("SELECT * FROM product_original INNER JOIN type ON product_original.type_id = type.type_id");
 $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -22,14 +22,13 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 
 <body id="page-top">
     <div id="wrapper">
-        <?php include 'include/sidebar.php'; ?>
+    <?php include '../include/sidebar_admin.php'; ?>
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                <?php include 'include/topbar.php'; ?>
+            <?php include '../include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Products</h1>
-                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท</a> -->
+                        <h1 class="h3 mb-0 text-gray-800">Products Original</h1>
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insert_product">
                             <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มเครื่องดื่ม
                         </button>
@@ -48,30 +47,25 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                             <th width="35%" class="text-center">ชื่อ</th>
                                             <th width="30%" class="text-center">ประเภท</th>
                                             <th width="15%" class="text-center">ราคา</th>
-                                            <!-- <th width="10%" class="text-center">จำนวน</th> -->
                                             <th width="10%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         foreach ($row_product as $row) {
-                                            $quantity = $connect->prepare("SELECT SUM(quantity) as quantity FROM record WHERE product_id = '" . $row['product_id'] . "'");
-                                            $quantity->execute();
-                                            $row_quantity = $quantity->fetch(PDO::FETCH_ASSOC);
                                         ?>
                                             <tr>
                                                 <td class="text-center"><?= $row['name'] ?></td>
                                                 <td class="text-center"><?= $row['type'] ?></td>
                                                 <td class="text-center"><?= $row['price'] ?></td>
-                                                <!-- <td class="text-center"><?= isset($row_quantity['quantity']) ? $row_quantity['quantity'] : 0 ?></td> -->
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                             ตัวเลือก
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <button class="dropdown-item" type="button" onclick="get_product(<?= $row['product_id'] ?>)">แก้ไข</button>
-                                                            <button class="dropdown-item" type="button" onclick="delete_product(<?= $row['product_id'] ?>)">ลบ</button>
+                                                            <button class="dropdown-item" type="button" onclick="get_product(<?= $row['product_original_id'] ?>)">แก้ไข</button>
+                                                            <button class="dropdown-item" type="button" onclick="delete_product(<?= $row['product_original_id'] ?>)">ลบ</button>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -88,12 +82,12 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
 
                 </div>
             </div>
-            <?php include 'include/footer.php'; ?>
+            <?php include '../include/footer.php'; ?>
         </div>
     </div>
-    <?php include 'include/scroll.php'; ?>
-    <?php include 'include/modal.php'; ?>
-    <?php include 'include/js.php'; ?>
+    <?php include '../include/scroll.php'; ?>
+    <?php include '../include/modal.php'; ?>
+    <?php include '../include/js.php'; ?>
 
     <!-- Modal -->
     <div class="modal fade" id="insert_product" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -106,7 +100,6 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <!-- <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="ชื่อเครื่องดื่ม" value="<?= $_SESSION['user_id'] ?>" required> -->
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="formGroupExampleInput">ชื่อเครื่องดื่ม</label>
@@ -130,7 +123,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <img id="showpic" src="./img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
+                        <img id="showpic" src="../img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
                     </div>
                     <div class="text-center">
                         <input type="file" class="sr-only" id="preimg" name="preimg" accept="image/*" onchange="readURL(this);" style="display: none;">
@@ -155,7 +148,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <input type="hidden" class="form-control" name="product_id" id="product_id_edit" placeholder="ประเภท">
+                    <input type="hidden" class="form-control" name="product_original_id" id="product_id_edit" placeholder="ประเภท">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="formGroupExampleInput">ชื่อเครื่องดื่ม</label>
@@ -178,7 +171,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <textarea class="form-control" name="description" id="description_edit" placeholder="รายละเอียด" style="height: 150px" required></textarea>
                         </div>
                         <div class="form-floating mb-3">
-                            <img id="showpic1" src="./img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg1').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
+                            <img id="showpic1" src="../img/add_image.png" class="rounded col-sm-12" onclick="document.getElementById('preimg1').click();" style="cursor: pointer; width: 300px; display: block; margin: auto;">
                             <input type="hidden" name="img_path" id="img_path_edit" value="">
                         </div>
                         <div class="text-center">
@@ -299,12 +292,12 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             });
         });
 
-        function get_product(product_id) {
+        function get_product(product_original_id) {
             $.ajax({
-                url: 'check/get_product.php',
+                url: 'check/get_product_original.php',
                 type: "POST",
                 data: {
-                    product_id: product_id
+                    product_original_id: product_original_id
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
@@ -312,9 +305,9 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                     $('#type_id_edit option[value="' + res.type_id + '"]').prop('selected', true);
                     $("#price_edit").val(res.price);
                     $("#description_edit").val(res.description);
-                    $("#product_id_edit").val(res.product_id);
+                    $("#product_id_edit").val(res.product_original_id);
                     if (res.img_path != '') {
-                        $("#showpic1").attr("src", "./img/" + res.img_path);
+                        $("#showpic1").attr("src", "../img/" + res.img_path);
                     }
                     $("#img_path_edit").val(res.img_path);
                     $("#edit_product").modal("show");
@@ -322,12 +315,12 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
             });
         }
 
-        function delete_product(product_id) {
+        function delete_product(product_original_id) {
             $.ajax({
-                url: 'check/get_product.php',
+                url: 'check/get_product_original.php',
                 type: "POST",
                 data: {
-                    product_id: product_id
+                    product_original_id: product_original_id
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
@@ -346,7 +339,7 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                 url: 'check/delete_product.php',
                                 method: 'POST',
                                 data: {
-                                    product_id: product_id
+                                    product_original_id: product_original_id
                                 },
                                 success: function(response) {
                                     if (response == 'success') {

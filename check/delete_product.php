@@ -5,8 +5,8 @@ require_once '../include/connect.php';
 if (isset($_SESSION['user_id'])) {
     $product_id = $_POST['product_id'];
 
-    $delete_type = $connect->query("DELETE FROM product WHERE product_id = '$product_id'");
-    if ($delete_type) {
+    $delete_product = $connect->query("DELETE FROM product WHERE product_id = '$product_id'");
+    if ($delete_product) {
         echo 'success';
         exit();
     } else {

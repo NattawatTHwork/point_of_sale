@@ -11,7 +11,6 @@ if (isset($_SESSION['user_id'])) {
     // $type_id = $_POST['type_id'];
     // $description = $_POST['description'];
     // $price = $_POST['price'];
-    // $discount = $_POST['discount'];
     // $user_id = $_SESSION['user_id'];
     $count = $_POST['count'];
     $no_receipt = date("YmdHis");

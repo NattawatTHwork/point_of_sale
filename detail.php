@@ -14,13 +14,17 @@ if (isset($_GET['no_receipt'])) {
 } else {
     $no_receipt = '';
 }
-$data = $connect->prepare("SELECT * FROM payment WHERE no_receipt = '$no_receipt'");
-$data->execute();
-$row_data = $data->fetch(PDO::FETCH_ASSOC);
+// $data = $connect->prepare("SELECT * FROM payment WHERE no_receipt = '$no_receipt'");
+// $data->execute();
+// $row_data = $data->fetch(PDO::FETCH_ASSOC);
 
-$detail_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE record.no_receipt = $no_receipt");
+$detail_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id INNER JOIN user ON product.user_id = user.user_id WHERE record.no_receipt = $no_receipt");
 $detail_data->execute();
 $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
+
+if ($row_detail_data[0]['user_id'] != $_SESSION['user_id']) {
+    header("location: report_payment_date.php");
+}
 ?>
 
 <body id="page-top">
@@ -41,26 +45,34 @@ $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-
                                 <table class="table table-borderless text-center" id="Table" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="4" style="font-size: 32px;"><?= $row_detail_data[0]['store'] ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">หมายเลขใบเสร็จ <?= $row_detail_data[0]['no_receipt'] ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">วันที่ <?= $row_detail_data[0]['timestamp'] ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">ที่อยู่ร้านค้า <?= $row_detail_data[0]['address'] ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4"><?= $row_detail_data[0]['timestamp'] == 1 ? 'ชำระเงินด้วยพร้อมเพย์' : 'ชำระเงินด้วยเงินสด' ?></th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4"></th>
+                                        </tr>
+                                        <tr>
+                                            <th style="border: 1px solid gray;">จำนวน</th>
+                                            <th style="border: 1px solid gray;">ชื่อเครื่องดื่ม</th>
+                                            <th style="border: 1px solid gray;">ราคา</th>
+                                            <th style="border: 1px solid gray;">จำนวนเงิน</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                        <tr>
-                                            <th colspan="3">หมายเลขใบเสร็จ <?= $row_data['no_receipt'] ?></th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="3">วันที่ <?= $row_data['timestamp'] ?></th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="3"><?= $row_data['timestamp'] == 1 ? 'ชำระเงินด้วยพร้อมเพย์' : 'ชำระเงินด้วยเงินสด' ?></th>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="3"></th>
-                                        </tr>
-                                        <tr>
-                                            <th>ชื่อเครื่องดื่ม</th>
-                                            <th>ราคา</th>
-                                            <th>จำนวน</th>
-                                        </tr>
                                         <?php
                                         $total_price = 0;
                                         foreach ($row_detail_data as $row) {
@@ -68,18 +80,21 @@ $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
                                             $total_price += $price;
                                         ?>
                                             <tr>
-                                                <th><?= $row['name'] ?></th>
-                                                <th><?= $row['net_price'] ?></th>
-                                                <th><?= $row['quantity'] ?></th>
+                                                <th style="border: 1px solid gray;"><?= $row['quantity'] ?></th>
+                                                <th style="border: 1px solid gray;"><?= $row['name'] ?></td>
+                                                <th style="border: 1px solid gray;"><?= $row['net_price'] ?></td>
+                                                <th style="border: 1px solid gray;"><?= $price ?></td>
                                             </tr>
                                         <?php
                                         }
                                         ?>
-                                        <tr>
-                                            <th colspan="2">ราคารวม</th>
-                                            <th><?= $total_price ?></th>
-                                        </tr>
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" style="border: 1px solid gray;">ราคารวม</th>
+                                            <th style="border: 1px solid gray;"><?= $total_price ?></th>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                             <button class="no-print btn btn-primary float-right mt-3" onclick="print_receipt(<?= $no_receipt ?>)">พิมพ์ใบเสร็จ</button>
@@ -106,6 +121,7 @@ $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
             var printWindow = window.open('', 'Print Receipt');
             printWindow.document.write('<html><head><title>Receipt</title></head><body>');
             printWindow.document.write(table.outerHTML);
+            printWindow.document.write('<div>ผู้รับเงิน: ........................................</div>');
             printWindow.document.write('</body></html>');
 
             // Print the receipt and close the window

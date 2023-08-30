@@ -1,11 +1,11 @@
 <?php
 session_start();
-require_once '../include/connect.php';
+require_once '../../include/connect.php';
 
-if (isset($_SESSION['user_id'])) {
-    // $product_id = $_POST['product_id'];
+if (isset($_SESSION['admin_id'])) {
+    $product_original_id = $_POST['product_original_id'];
 
-    $get_product = $connect->prepare("SELECT * FROM product WHERE product_id = '$product_id'");
+    $get_product = $connect->prepare("SELECT * FROM product_original WHERE product_original_id = '$product_original_id'");
     $get_product->execute();
     $row_product = $get_product->fetch(PDO::FETCH_ASSOC);
     if ($row_product) {

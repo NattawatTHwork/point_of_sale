@@ -13,6 +13,16 @@ $user_id = $_SESSION['user_id'];
 $product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id'");
 $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
+// echo '<pre>';
+// print_r($row_product);
+// echo '</pre>';
+
+$type = $connect->prepare("SELECT type.type_id, type, COUNT(*) as count FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id' GROUP BY type.type_id, type ORDER BY type ASC");
+$type->execute();
+$row_type = $type->fetchAll(PDO::FETCH_ASSOC);
+// echo '<pre>';
+// print_r($row_type);
+// echo '</pre>';
 
 $qr_code = $connect->prepare("SELECT img_path FROM user WHERE user_id = '$user_id'");
 $qr_code->execute();
@@ -51,25 +61,30 @@ if ($count > 1) {
             <div id="content">
                 <?php include 'include/topbar.php'; ?>
                 <div class="container-fluid">
+                    <select id="typeSelector" class="form-control mb-3">
+                        <option value="all">ทั้งหมด</option>
+                        <?php foreach ($row_type as $type) { ?>
+                            <option value="<?= $type['type_id'] ?>"><?= $type['type'] ?></option>
+                        <?php } ?>
+                    </select>
                     <form id="insert_record_form">
                         <div class="row">
                             <?php
                             $i = 0;
                             foreach ($row_product as $row) {
                             ?>
-                                <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 text-center mb-3">
-                                    <div class="card">
-                                        <div style="height: 200px; display: flex; justify-content: center; align-items: center;">
-                                            <img class="card-img-top" src="./img/<?= $row['img_path'] != '' ? $row['img_path']  : 'no_image.jpg' ?>" alt="Card image cap" style="max-height: 100%; max-width: 100%; border-radius: 5%;">
+                                    <div class="card text-center m-3" data-type="<?= $row['type_id'] ?>" style="width: 200px; height: 300px;">
+                                        <div class="m-5" style="height: 50px; display: flex; justify-content: center; align-items: center;">
+                                            <img class="card-img-top" src="./img/<?= $row['img_path'] != '' ? $row['img_path']  : 'no_image.jpg' ?>" alt="Card image cap" style="max-height: 200px; object-fit: contain; border-radius: 5%;">
                                         </div>
                                         <div class="card-body">
                                             <h4 class="card-title font-weight-bold" id="name<?= $i += 1 ?>"><?= $row['name'] ?></h4>
-                                            <h5 class="card-text" id="net_price<?= $i ?>"><?= $row['price'] - $row['discount'] ?> บาท</h5>
+                                            <h5 class="card-text" id="net_price<?= $i ?>"><?= $row['price'] ?> บาท</h5>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <button type="button" class="btn btn-dark" onclick="decreaseQuantity<?= $i ?>()">-</button>
                                                 </div>
-                                                <input type="hidden" name="price<?= $i ?>" id="price<?= $i ?>" value="<?= $row['price'] - $row['discount'] ?>" class="form-control">
+                                                <input type="hidden" name="price<?= $i ?>" id="price<?= $i ?>" value="<?= $row['price'] ?>" class="form-control">
                                                 <input type="hidden" name="product_id<?= $i ?>" id="product_id<?= $i ?>" value="<?= $row['product_id'] ?>" class="form-control">
                                                 <input type="number" name="quantity<?= $i ?>" id="quantity<?= $i ?>" value="0" class="form-control" style="padding: 0px; font-size: 20px; text-align: center;">
                                                 <div class="input-group-append">
@@ -78,7 +93,6 @@ if ($count > 1) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                             <?php
                             }
                             ?>
@@ -87,7 +101,7 @@ if ($count > 1) {
                         <?php
                         if ($product_data->rowCount() > 0) {
                         ?>
-                            <div class="d-flex justify-content-center align-items-center">
+                            <div class="d-flex justify-content-center align-items-center mb-4">
                                 <button class="btn btn-primary" type="button" onclick="pre_confirm()">ยืนยัน</button>
                             </div>
                         <?php
@@ -263,6 +277,12 @@ if ($count > 1) {
                                                         location.reload();
                                                     }
                                                 })
+                                                // Swal.fire({
+                                                //     title: 'สำเร็จ',
+                                                //     icon: 'success',
+                                                //     confirmButtonText: 'ตกลง',
+                                                //     confirmButtonColor: '#4e73df'
+                                                // })
                                             }
                                             if (response == 'fail') {
                                                 Swal.fire({
@@ -314,6 +334,12 @@ if ($count > 1) {
                                                         location.reload();
                                                     }
                                                 })
+                                                // Swal.fire({
+                                                //     title: 'สำเร็จ',
+                                                //     icon: 'success',
+                                                //     confirmButtonText: 'ตกลง',
+                                                //     confirmButtonColor: '#4e73df'
+                                                // })
                                             }
                                             if (response == 'fail') {
                                                 Swal.fire({
@@ -337,8 +363,25 @@ if ($count > 1) {
             if ((<?= $nextMonthDate ?> < <?= $todayDate ?>) && (<?= $count ?> > 1)) {
                 $("#popupModal").modal("show");
             }
+
+            // เมื่อมีการเปลี่ยนแปลงในเลือกประเภท
+            document.getElementById("typeSelector").addEventListener("change", function() {
+                var selectedType = this.value; // ค่าประเภทที่ถูกเลือก
+                var cards = document.querySelectorAll(".card"); // เลือกทุก card
+
+                cards.forEach(function(card) {
+                    var cardType = card.getAttribute("data-type"); // ประเภทของ card
+                    if (selectedType === "all" || cardType === selectedType) {
+                        card.style.display = "block"; // แสดง card ที่ตรงเงื่อนไข
+                    } else {
+                        card.style.display = "none"; // ซ่อน card ที่ไม่ตรงเงื่อนไข
+                    }
+                });
+            });
+
         });
     </script>
+
 </body>
 
 </html>

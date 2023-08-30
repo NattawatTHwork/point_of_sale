@@ -26,16 +26,39 @@ $months = array(
     "ธันวาคม" // December
 );
 
-if (isset($_GET['month'])) {
+// if (isset($_GET['month'])) {
+//     $month = $_GET['month'];
+// } else {
+//     $month = 'MONTH(CURRENT_DATE())';
+// }
+
+// if (isset($_GET['year'])) {
+//     $year = $_GET['year'];
+// } else {
+//     $year = 'YEAR(CURRENT_DATE())';
+// }
+
+if (!empty($_GET['month'])) {
     $month = $_GET['month'];
 } else {
-    $month = 'MONTH(CURRENT_DATE())';
+    $month = date('m');
 }
 
-if (isset($_GET['year'])) {
+if (!empty($_GET['year'])) {
     $year = $_GET['year'];
 } else {
-    $year = 'YEAR(CURRENT_DATE())';
+    $year = date('Y');
+}
+
+$m = date('m');
+$y = date('Y');
+
+if (isset($month)) {
+    $m = $month;
+}
+
+if (isset($year)) {
+    $y = $year;
 }
 
 $current_date = date("j F Y", strtotime("now", strtotime("+7 hours")));
@@ -66,13 +89,15 @@ $today = date('Y-m-d');
                         <form method="GET" action="dashboard.php">
                             <div class="d-inline">
                                 <select class="form-select form-control-lg is-valid d-inline" name="month" required>
+                                    <option value="">เดือน</option>
                                     <?php for ($i = 0; $i < 12; $i++) { ?>
-                                        <option value="<?= $i + 1 ?>" <?= $month == $i + 1 ? 'selected' : '' ?>><?= $months[$i] ?></option>
+                                        <option value="<?= $i + 1 ?>" <?= $m == $i + 1 ? 'selected' : '' ?>><?= $months[$i] ?></option>
                                     <?php } ?>
                                 </select>
-                                <select class="form-select form-control-lg is-valid d-inline" name="year">
+                                <select class="form-select form-control-lg is-valid d-inline" name="year" required>
+                                    <option value="">ปี</option>
                                     <?php for ($i = 2023; $i <= 2037; $i++) { ?>
-                                        <option value="<?= $i ?>" <?= $year == $i ? 'selected' : '' ?>><?= $i + 543 ?></option>
+                                        <option value="<?= $i ?>" <?= $y == $i ? 'selected' : '' ?>><?= $i + 543 ?></option>
                                     <?php } ?>
                                 </select>
                             </div>

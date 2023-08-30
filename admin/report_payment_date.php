@@ -11,6 +11,11 @@ include '../include/header.php';
 
 if (!empty($_GET['user_id'])) {
     $user_id = $_GET['user_id'];
+} else {
+    $user_fist = $connect->prepare("SELECT * FROM user");
+    $user_fist->execute();
+    $row_user_first = $user_fist->fetch(PDO::FETCH_ASSOC);
+    $user_id = $row_user_first['user_id'];
 }
 
 if (!empty($_GET['date'])) {
@@ -26,9 +31,9 @@ if (!empty($_GET['year'])) {
 }
 
 $u = '';
-$d = '';
-$m = '';
-$y = '';
+$d = date('d');
+$m = date('m');
+$y = date('Y');
 
 if (isset($user_id)) {
     $u = $user_id;

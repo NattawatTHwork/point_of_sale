@@ -11,19 +11,28 @@ include '../include/header.php';
 
 if (!empty($_GET['user_id'])) {
     $user_id = $_GET['user_id'];
+} else {
+    $user_fist = $connect->prepare("SELECT * FROM user");
+    $user_fist->execute();
+    $row_user_first = $user_fist->fetch(PDO::FETCH_ASSOC);
+    $user_id = $row_user_first['user_id'];
 }
 
 if (!empty($_GET['month'])) {
     $month = $_GET['month'];
+}else {
+    $month = date('m');
 }
 
 if (!empty($_GET['year'])) {
     $year = $_GET['year'];
+} else {
+    $year = date('Y');
 }
 
 $u = '';
-$m = '';
-$y = '';
+$m = date('m');
+$y = date('Y');
 
 if (isset($user_id)) {
     $u = $user_id;
@@ -36,6 +45,8 @@ if (isset($month)) {
 if (isset($year)) {
     $y = $year;
 }
+
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
 $row_report = [];
 $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id GROUP BY record.no_receipt");
@@ -113,63 +124,48 @@ $months = array(
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="Table" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="Table" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th width="10%" class="text-center">ลำดับ</th>
-                                            <th width="30%" class="text-center">หมายเลขใบเสร็จ</th>
-                                            <th width="30%" class="text-center">วิธีชำระเงิน</th>
-                                            <th width="20%" class="text-center">ยอดรวม</th>
-                                            <th width="10%" class="text-center">ตัวเลือก</th>
+                                            <th width="20%" class="text-center">วันที่</th>
+                                            <th width="60%" class="text-center">ยอดรวม</th>
+                                            <th width="20%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         $all_price = 0;
-                                        $j = 1;
-                                        foreach ($row_report as $row) {
-                                            $price = $connect->prepare("SELECT net_price, quantity FROM record WHERE no_receipt = '" . $row['no_receipt'] . "'");
-                                            $price->execute();
-                                            $row_price = $price->fetchAll(PDO::FETCH_ASSOC);
-                                            $total_price = 0;
-                                            foreach ($row_price as $rp) {
-                                                $total_price += $rp['net_price'] * $rp['quantity'];
-                                            }
-                                            $all_price += $total_price;
+                                        for ($i = 1; $i <= $daysInMonth; $i++) {
+                                            $price_date = $connect->prepare("SELECT user_id, SUM(quantity * net_price) AS total_price FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt INNER JOIN product ON product.product_id = record.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $i AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                            $price_date->execute();
+                                            $row_price_date = $price_date->fetch(PDO::FETCH_ASSOC);
+                                            $all_price += $row_price_date['total_price'];
                                         ?>
                                             <tr>
-                                                <td class="text-center"><?= $j++ ?></td>
-                                                <td class="text-center"><?= $row['no_receipt'] ?></td>
-                                                <td class="text-center"><?= $row['method'] == 1 ? 'พร้อมเพย์' : 'เงินสด' ?></td>
-                                                <td class="text-center"><?= $total_price ?></td>
+                                                <td class="text-center"><?= $i ?></td>
+                                                <td class="text-center"><?= $row_price_date['total_price'] ? $row_price_date['total_price'] : 0 ?></td>
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                             ตัวเลือก
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="./detail.php?no_receipt=<?= $row['no_receipt'] ?>">ดูข้อมูล</a>
-                                                            <button class="dropdown-item" type="button" onclick="delete_data(<?= $row['no_receipt'] ?>)">ลบ</button>
+                                                            <a class="dropdown-item" href="./report_payment_date.php?date=<?= $i ?>&month=<?= $month ?>&year=<?= $year ?>">ดูข้อมูล</a>
+                                                            <!-- <button class="dropdown-item" type="button" onclick="delete_data(<?= $row['no_receipt'] ?>)">ลบ</button> -->
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                         <?php } ?>
-                                        <?php if (count($row_report) == 0) { ?>
-                                            <tr>
-                                                <td class="text-center" colspan="5">ไม่มีข้อมูล</td>
-                                            </tr>
-                                        <?php } ?>
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th colspan="3" class="text-center">ยอดขายรวม</th>
+                                            <th colspan="1" class="text-center">ยอดขายรวม</th>
                                             <th class="text-center"><?= $all_price ?></th>
-                                            <th colspan="2"></th>
+                                            <th></th>
                                         </tr>
                                     </tfoot>
-                                </table>
-                            </div>
+                                </table>                            </div>
                             <button id="download_link" onClick="javascript:ExcelReport();" class="btn btn-primary float-right mt-3">
                                 <i class="fas fa-download fa-sm text-white-50"></i> ดาวน์โหลดตาราง
                             </button>

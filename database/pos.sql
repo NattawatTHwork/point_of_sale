@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2023 at 12:35 PM
+-- Generation Time: Aug 30, 2023 at 11:24 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 7.4.30
 
@@ -69,11 +69,14 @@ INSERT INTO `member` (`member_id`, `user_id`, `approve_date`, `img_path`) VALUES
 (34, 8, '2023-06-22', ''),
 (42, 9, '2023-03-22', ''),
 (43, 9, '2023-04-22', '10646dca528289b125189654_135325081672669_8915418648408975795_n.jpg'),
-(44, 7, '2023-05-25', ''),
+(44, 7, '2023-05-25', '1064e1c5aab39c4p4.jpg'),
 (56, 10, '2023-05-25', ''),
 (61, 12, '2023-03-23', ''),
 (62, 12, '2023-04-25', '1064745c090eec11.jpg'),
-(63, 12, '2023-05-29', '');
+(63, 12, '2023-05-29', ''),
+(65, 7, '2023-07-29', '1064ec180ccfbd0cashbill.jpeg'),
+(67, 7, '2023-08-29', ''),
+(69, 11, '2023-08-29', '');
 
 -- --------------------------------------------------------
 
@@ -115,7 +118,17 @@ INSERT INTO `payment` (`payment_id`, `no_receipt`, `method`, `timestamp`, `statu
 (67, '20230529172359', 0, '2023-05-29 10:23:59', 1),
 (68, '20230529172754', 1, '2023-05-29 10:27:54', 0),
 (69, '20230531165547', 1, '2023-05-31 09:55:47', 0),
-(70, '20230531165954', 0, '2023-05-31 09:59:54', 0);
+(70, '20230531165954', 0, '2023-05-31 09:59:54', 0),
+(71, '20230612005559', 0, '2023-06-11 17:55:59', 1),
+(72, '20230629170827', 0, '2023-06-29 10:08:27', 1),
+(73, '20230705151323', 1, '2023-07-05 08:13:23', 1),
+(74, '20230705151335', 0, '2023-07-05 08:13:35', 0),
+(75, '20230820145200', 1, '2023-08-20 07:52:00', 1),
+(76, '20230820162708', 0, '2023-08-20 09:27:08', 0),
+(77, '20230820162747', 1, '2023-08-20 09:27:47', 0),
+(78, '20230828101628', 1, '2023-08-28 03:16:28', 0),
+(79, '20230828103008', 1, '2023-08-28 03:30:08', 0),
+(80, '20230829122753', 1, '2023-08-29 05:27:53', 0);
 
 -- --------------------------------------------------------
 
@@ -127,10 +140,9 @@ CREATE TABLE `product` (
   `product_id` int(10) NOT NULL,
   `type_id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
-  `name` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `description` text NOT NULL,
   `price` int(10) NOT NULL,
-  `discount` int(10) NOT NULL,
   `img_path` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -138,13 +150,13 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `type_id`, `user_id`, `name`, `description`, `price`, `discount`, `img_path`) VALUES
-(17, 23, 7, 'โค้ก', 'โค้ก', 15, 0, '10644cc946558778851959149010_1-20221207171555-.jpg'),
-(18, 26, 7, 'นมตราหมี', 'นมตราหมี', 12, 0, '10644cc9b4f38c3BB-Product-shot-01.png'),
-(19, 24, 7, 'ลาเต้', 'ลาเต้', 60, 0, '10644cca5474a0e95a6b902c8074b248d3f98297d293237.png'),
-(20, 24, 7, 'กาแฟดำ', 'กาแฟดำ', 55, 0, '10644cca7ae86bbff43e8c44724493587d06bb75bb51915.png'),
-(21, 27, 7, 'น้ำส้ม', 'น้ำส้มอร่อยที่สุดในโลก', 35, 0, '1064638cb409fd8125189654_135325081672669_8915418648408975795_n.jpg'),
-(22, 27, 7, 'น้ำแครอท', 'น้ำผลไม้เพื่อสุขภาพ', 30, 5, '1064638ce8e2fd9download.jpeg');
+INSERT INTO `product` (`product_id`, `type_id`, `user_id`, `name`, `description`, `price`, `img_path`) VALUES
+(17, 23, 7, 'โค้ก', 'โค้ก', 15, '10644cc946558778851959149010_1-20221207171555-.jpg'),
+(18, 26, 7, 'นมตราหมี', 'นมตราหมี', 12, '10644cc9b4f38c3BB-Product-shot-01.png'),
+(19, 24, 7, 'ลาเต้', 'ลาเต้', 60, '10644cca5474a0e95a6b902c8074b248d3f98297d293237.png'),
+(20, 24, 7, 'กาแฟดำ', 'กาแฟดำ', 55, '10644cca7ae86bbff43e8c44724493587d06bb75bb51915.png'),
+(21, 27, 7, 'น้ำส้ม', 'น้ำส้มอร่อยที่สุดในโลก', 35, '1064638cb409fd8125189654_135325081672669_8915418648408975795_n.jpg'),
+(22, 27, 7, 'น้ำแครอท', 'น้ำผลไม้เพื่อสุขภาพ', 30, '1064638ce8e2fd9download.jpeg');
 
 -- --------------------------------------------------------
 
@@ -202,7 +214,28 @@ INSERT INTO `record` (`record_id`, `no_receipt`, `product_id`, `quantity`, `net_
 (124, '20230529172359', 18, 2, 12),
 (125, '20230529172754', 17, 1, 15),
 (126, '20230531165547', 17, 1, 15),
-(127, '20230531165954', 18, 1, 12);
+(127, '20230531165954', 18, 1, 12),
+(128, '20230612005559', 21, 1, 35),
+(129, '20230629170827', 17, 1, 15),
+(130, '20230705151323', 17, 1, 15),
+(131, '20230705151323', 18, 1, 12),
+(132, '20230705151323', 19, 1, 60),
+(133, '20230705151323', 20, 1, 55),
+(134, '20230705151323', 21, 1, 35),
+(135, '20230705151323', 22, 1, 25),
+(136, '20230705151335', 17, 5, 15),
+(137, '20230820145200', 17, 100, 15),
+(138, '20230820145200', 18, 100, 12),
+(139, '20230820145200', 19, 100, 60),
+(140, '20230820145200', 20, 100, 55),
+(141, '20230820145200', 21, 100, 35),
+(142, '20230820145200', 22, 100, 25),
+(143, '20230820162708', 21, 1, 35),
+(144, '20230820162747', 21, 1, 35),
+(145, '20230828101628', 17, 6, 15),
+(146, '20230828103008', 17, 5, 15),
+(147, '20230828103008', 18, 2, 12),
+(148, '20230829122753', 18, 2, 12);
 
 -- --------------------------------------------------------
 
@@ -212,6 +245,7 @@ INSERT INTO `record` (`record_id`, `no_receipt`, `product_id`, `quantity`, `net_
 
 CREATE TABLE `type` (
   `type_id` int(10) NOT NULL,
+  `admin_id` int(10) NOT NULL,
   `type` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -219,12 +253,13 @@ CREATE TABLE `type` (
 -- Dumping data for table `type`
 --
 
-INSERT INTO `type` (`type_id`, `type`) VALUES
-(23, 'น้ำอัดลม'),
-(24, 'กาแฟ'),
-(25, 'เครื่องดื่มโซดา'),
-(26, 'นม'),
-(27, 'น้ำผลไม้');
+INSERT INTO `type` (`type_id`, `admin_id`, `type`) VALUES
+(23, 1, 'น้ำอัดลม'),
+(24, 1, 'กาแฟ'),
+(25, 1, 'เครื่องดื่มโซดา'),
+(26, 1, 'นม'),
+(27, 1, 'น้ำผลไม้'),
+(28, 0, 'เบียร์');
 
 -- --------------------------------------------------------
 
@@ -255,12 +290,13 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`user_id`, `email`, `password`, `password_view`, `status`, `agree`, `firstname`, `lastname`, `id_number`, `phone`, `line`, `address`, `store`, `description`, `img_path`) VALUES
-(7, 'user@gmail.com', '$2y$10$BChw6lO9TBNlE0szK7TMoeIXl6GAf3sGDBbq67yv5A0.X9VeNeaL.', '123456', 1, 1, 'Nattawat', 'Thungyen', '7897623641259', '0871122211', 'id line', 'เชียงใหม่', 'BOMPaPerX', 'ขายทุกอย่าง', '106425d46bdff69QR.png'),
-(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', '123456', 1, 1, 'Wanchana', 'Kaedmun', '1234567891234', '0999999999', 'id line', 'เชียงราย', 'นายอาม', 'ขายกล้อง', ''),
+(7, 'user@gmail.com', '$2y$10$RrDdRV9KCJMm/0rroiNuruEayTgDKo3X.oQuKC2ghYUnWrB0FzWO2', '123456', 1, 1, 'Nattawat', 'Thungyen', '7897623641259', '0871122211', 'id line', '10 ม.1 ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200', 'BOMPaPerX', 'ขายทุกอย่าง', '106425d46bdff69QR.png'),
+(8, 'user2@gmail.com', '$2y$10$eXa/NC96wjdf3JV.xGrR4ubT1wO25f1NocnTaHdap68maRaEW9vzy', '123456', 0, 1, 'Wanchana', 'Kaedmun', '1234567891234', '0999999999', 'id line', 'เชียงราย', 'นายอาม', 'ขายกล้อง', ''),
 (9, '1@gmail.com', '$2y$10$PcQkgLevKKo1U4FTeALWa.4PkWHZ4c3mh.wUboF5CmcMvLye0Dxnu', '123456', 0, 1, 'Nattawat', 'Thungyen', '1234567891234', '0888888812', 'id line', 'กรุงเทพมหานคร', '123', '123', '10646cfb9d5bc60download.jpeg'),
-(10, '62223604@g.cmru.ac.th', '$2y$10$.7cN/Zo.zSnIt.MZ81T9zuShPJM9pXfN4RUQL9Rs8zJWOQFNieXBi', '123456', 1, 0, 'Wanchana', 'koedmun', '1234567891234', '0999999999', 'id line', 'ลำปาง', 'Coffee in Love', '555', '10644e07c5054bb1501_1602_Z62_0571.jpg'),
-(11, 'user3@gmail.com', '$2y$10$robgoijtoNPhDxacOvHiHOrrJLPUC2ttHHYWI9XcCvrorVbf/ybAO', '123456', 0, 1, 'Nattawat', 'Thungyen', '1234567890123', '0812634568', 'id line 555', 'พะเยา', 'รสชาติดี', 'ขายน้ำผลไม้', '10646448d6e6b3bQR.png'),
-(12, 'user4@gmail.com', '$2y$10$PR6c2c49Co.YmUhM73JvD.mx.HYkce8Imax2fAMigxCo0VowKn2Ae', '123456', 1, 1, 'nutthicha', 'taname', '1111111111111', '0999999999', 'prang', '10 ม.3 ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200', 'Shopee', 'ขายของ 1 บาท', '10646f8b2e88875QR.png');
+(10, '62223604@g.cmru.ac.th', '$2y$10$.7cN/Zo.zSnIt.MZ81T9zuShPJM9pXfN4RUQL9Rs8zJWOQFNieXBi', '123456', 0, 0, 'Wanchana', 'koedmun', '1234567891234', '0999999999', 'id line', 'ลำปาง', 'Coffee in Love', '555', '10644e07c5054bb1501_1602_Z62_0571.jpg'),
+(11, 'user3@gmail.com', '$2y$10$robgoijtoNPhDxacOvHiHOrrJLPUC2ttHHYWI9XcCvrorVbf/ybAO', '123456', 1, 1, 'Nattawat', 'Thungyen', '1234567890123', '0812634568', 'id line 555', 'พะเยา', 'รสชาติดี', 'ขายน้ำผลไม้', '10646448d6e6b3bQR.png'),
+(12, 'user4@gmail.com', '$2y$10$PR6c2c49Co.YmUhM73JvD.mx.HYkce8Imax2fAMigxCo0VowKn2Ae', '123456', 0, 1, 'nutthicha', 'taname', '1111111111111', '0999999999', 'prang', '10 ม.3 ต.สุเทพ อ.เมือง จ.เชียงใหม่ 50200', 'Shopee', 'ขายของ 1 บาท', '10646f8b2e88875QR.png'),
+(13, 'user5@gmail.com', '$2y$10$Fn5kJY0McLlslhPAgbB5Cu3v3/lDjemjnRRGPvPq2GCW3SzMdaV0W', '123456', 0, 0, '', '', '', '', '', '', '', '', '');
 
 --
 -- Indexes for dumped tables
@@ -322,37 +358,37 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `member_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `payment_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `product_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `record`
 --
 ALTER TABLE `record`
-  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
+  MODIFY `record_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=149;
 
 --
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `type_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

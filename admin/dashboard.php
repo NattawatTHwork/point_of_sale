@@ -9,32 +9,32 @@ if (!isset($_SESSION['admin_id'])) {
 require '../include/connect.php';
 include '../include/header.php';
 
-$months = array(
-    "มกราคม", // January
-    "กุมภาพันธ์", // February
-    "มีนาคม", // March
-    "เมษายน", // April
-    "พฤษภาคม", // May
-    "มิถุนายน", // June
-    "กรกฎาคม", // July
-    "สิงหาคม", // August
-    "กันยายน", // September
-    "ตุลาคม", // October
-    "พฤศจิกายน", // November
-    "ธันวาคม" // December
-);
+// $months = array(
+//     "มกราคม", // January
+//     "กุมภาพันธ์", // February
+//     "มีนาคม", // March
+//     "เมษายน", // April
+//     "พฤษภาคม", // May
+//     "มิถุนายน", // June
+//     "กรกฎาคม", // July
+//     "สิงหาคม", // August
+//     "กันยายน", // September
+//     "ตุลาคม", // October
+//     "พฤศจิกายน", // November
+//     "ธันวาคม" // December
+// );
 
-if (isset($_GET['month'])) {
-    $month = $_GET['month'];
-} else {
-    $month = 'MONTH(CURRENT_DATE())';
-}
+// if (isset($_GET['month'])) {
+//     $month = $_GET['month'];
+// } else {
+//     $month = 'MONTH(CURRENT_DATE())';
+// }
 
-if (isset($_GET['year'])) {
-    $year = $_GET['year'];
-} else {
-    $year = 'YEAR(CURRENT_DATE())';
-}
+// if (isset($_GET['year'])) {
+//     $year = $_GET['year'];
+// } else {
+//     $year = 'YEAR(CURRENT_DATE())';
+// }
 ?>
 
 <body id="page-top">
@@ -118,16 +118,43 @@ if (isset($_GET['year'])) {
                             </div>
                         </div> -->
 
-                        <div class="col-xl-12 col-md-12 mb-4" onclick="member()">
-                            <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="col-xl-12 col-md-12 mb-4" onclick="member_active()">
+                            <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                สมาชิก
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                สมาชิก Active
                                             </div>
                                             <?php
-                                            $count = $connect->prepare("SELECT user_id, COUNT(*) as count FROM member GROUP BY user_id HAVING count > 1");
+                                            $count = $connect->prepare("SELECT user.user_id, COUNT(*) as count, status FROM user LEFT JOIN member ON user.user_id = member.user_id WHERE status = 1 GROUP BY user_id HAVING count > 1");
+                                            $count->execute();
+                                            $count_user_id = $count->rowCount();
+                                            // $row_user = $count->fetchAll(PDO::FETCH_ASSOC);
+                                            // echo '<pre>';
+                                            // print_r($row_user);
+                                            // echo '</pre>';
+                                            ?>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-md-12 mb-4" onclick="member_inactive()">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                                สมาชิก Inactive
+                                            </div>
+                                            <?php
+                                            $count = $connect->prepare("SELECT user.user_id, COUNT(*) as count, status FROM user LEFT JOIN member ON user.user_id = member.user_id WHERE status = 0 GROUP BY user_id HAVING count > 1");
                                             $count->execute();
                                             $count_user_id = $count->rowCount();
                                             ?>
@@ -198,17 +225,25 @@ if (isset($_GET['year'])) {
     <?php include '../include/js.php'; ?>
 
     <script>
-        function active() {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=active";
+        // function active() {
+        //     window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=active";
+        // }
+
+        // function inactive() {
+        //     window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=inactive";
+        // }
+
+        function member_active() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member_active";
         }
 
-        function inactive() {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=inactive";
+        function member_inactive() {
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member_inactive";
         }
 
-        function member() {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member";
-        }
+        // function member() {
+        //     window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member";
+        // }
 
         function trial() {
             window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=trial";

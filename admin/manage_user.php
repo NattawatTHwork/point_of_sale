@@ -17,6 +17,9 @@ $row_member_count = $member_count->fetchAll(PDO::FETCH_ASSOC);
 $count = count($row_member_count);
 $i = 1;
 
+$user_data = $connect->prepare("SELECT user_id, firstname, lastname, store FROM user WHERE user_id = '$user_id'");
+$user_data->execute();
+$row_user = $user_data->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <body id="page-top">
@@ -46,6 +49,23 @@ $i = 1;
                             <h6 class="m-0 font-weight-bold text-primary">ประวัติการใช้บริการ</h6>
                         </div>
                         <div class="card-body">
+                            <div class="table-responsive">
+                                <table width="60%">
+                                    <tbody>
+                                        <tr>
+                                            <td height="60px" class="font-weight-bold">ชื่อผู้ใช้งาน</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><?= $row_user['firstname'] . ' ' . $row_user['lastname'] ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="60px" class="font-weight-bold">ชื่อร้านค้า</td>
+                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td><?= $row_user['store'] ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                                     <thead>

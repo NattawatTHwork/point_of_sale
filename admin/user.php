@@ -11,18 +11,20 @@ include '../include/header.php';
 
 $user_data = $connect->prepare("SELECT * FROM user");
 if (isset($_GET['status'])) {
-    if ($_GET['status'] == 'active' || $_GET['status'] == 'inactive') {
-        if ($_GET['status'] == 'active') {
-            $status = 1;
-        } else {
-            $status = 0;
-        }
-        $user_data = $connect->prepare("SELECT * FROM user WHERE status = '$status'");
-    }
+    // if ($_GET['status'] == 'active' || $_GET['status'] == 'inactive') {
+    //     if ($_GET['status'] == 'active') {
+    //         $status = 1;
+    //     } else {
+    //         $status = 0;
+    //     }
+    //     $user_data = $connect->prepare("SELECT * FROM user WHERE status = '$status'");
+    // }
 
-    if ($_GET['status'] == 'member' || $_GET['status'] == 'trial' || $_GET['status'] == 'wait') {
-        if ($_GET['status'] == 'member') {
-            $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id GROUP BY member.user_id HAVING count > 1");
+    if ($_GET['status'] == 'member_active' || $_GET['status'] == 'member_inactive' || $_GET['status'] == 'trial' || $_GET['status'] == 'wait') {
+        if ($_GET['status'] == 'member_active') {
+            $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id WHERE status = 1 GROUP BY member.user_id HAVING count > 1");
+        } elseif ($_GET['status'] == 'member_inactive') {
+            $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id WHERE status = 0 GROUP BY member.user_id HAVING count > 1");
         } elseif ($_GET['status'] == 'trial') {
             $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id GROUP BY member.user_id HAVING count = 1");
         } elseif ($_GET['status'] == 'wait') {
@@ -87,11 +89,39 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <td><?= $row['lastname'] ?></td>
                                                 <td><?= $row['email'] ?></td>
                                                 <td><?= $row['store'] ?></td>
-                                                <?php if ($row['status'] == 0) { ?>
-                                                    <td class="text-danger">ปิดใช้งาน</td>
-                                                <?php } else { ?>
-                                                    <td class="text-success">เปิดใช้งาน</td>
-                                                <?php } ?>
+                                                <?php
+                                                if (isset($_GET['status'])) {
+                                                    if ($_GET['status'] == 'trial') {
+                                                ?>
+                                                        <td class="text-warning">ทดลองใช้งาน</td>
+                                                    <?php
+                                                    } elseif ($_GET['status'] == 'wait') {
+                                                    ?>
+                                                        <td class="text-warning">รอการอนุมัติ</td>
+                                                        <?php
+                                                    } else {
+                                                        if ($row['status'] == 0) {
+                                                        ?>
+                                                            <td class="text-danger">ปิดใช้งาน</td>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <td class="text-success">เปิดใช้งาน</td>
+                                                        <?php
+                                                        }
+                                                    }
+                                                } else {
+                                                    if ($row['status'] == 0) {
+                                                        ?>
+                                                        <td class="text-danger">ปิดใช้งาน</td>
+                                                    <?php
+                                                    } else {
+                                                    ?>
+                                                        <td class="text-success">เปิดใช้งาน</td>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -176,7 +206,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                         <textarea class="form-control" name="description" id="description" placeholder="รายละเอียด" style="height: 150px" disabled></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="description">QR Code</label><br>
+                        <label for="description">QR Code สำหรับรับชำระเงินพร้อมเพย์ของร้านค้า</label><br>
                         <img src="" name="img_path" id="img_path" class="mx-auto d-block" width="400">
                     </div>
                 </div>
@@ -347,8 +377,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                             let row = $('<tr>');
                             row.append($('<td>').text(i++));
                             row.append($('<td>').text(rowData.name));
-                            let priceMinusDiscount = parseFloat(rowData.price) - parseFloat(rowData.discount);
-                            row.append($('<td>').text(priceMinusDiscount));
+                            row.append($('<td>').text(rowData.price));
                             tbody.append(row);
                         });
                     }

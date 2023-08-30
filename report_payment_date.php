@@ -21,9 +21,9 @@ if (!empty($_GET['year'])) {
     $year = $_GET['year'];
 }
 
-$d = '';
-$m = '';
-$y = '';
+$d = date('d');
+$m = date('m');
+$y = date('Y');
 
 if (isset($date)) {
     $d = $date;
@@ -38,7 +38,7 @@ if (isset($year)) {
 }
 
 $user_id = $_SESSION['user_id'];
-$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' GROUP BY record.no_receipt");
+$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $d AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y GROUP BY record.no_receipt");
 if (isset($date) && isset($month) && isset($year)) {
     $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $date AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
 }
