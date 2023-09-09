@@ -46,7 +46,7 @@ include '../include/header.php';
                 <div class="container-fluid">
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <h1 class="h3 mb-0 text-gray-800">ร้านค้าในระบบ</h1>
                         <!-- <form method="GET" action="dashboard.php">
                             <div class="d-inline">
                                 <select class="form-select form-control-lg is-valid d-inline" name="month" required>
@@ -123,7 +123,7 @@ include '../include/header.php';
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            <div class="text-lg font-weight-bold text-success text-uppercase mb-1">
                                                 สมาชิก Active
                                             </div>
                                             <?php
@@ -135,7 +135,7 @@ include '../include/header.php';
                                             // print_r($row_user);
                                             // echo '</pre>';
                                             ?>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -150,7 +150,7 @@ include '../include/header.php';
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                            <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">
                                                 สมาชิก Inactive
                                             </div>
                                             <?php
@@ -158,7 +158,7 @@ include '../include/header.php';
                                             $count->execute();
                                             $count_user_id = $count->rowCount();
                                             ?>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -173,7 +173,7 @@ include '../include/header.php';
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            <div class="text-lg font-weight-bold text-info text-uppercase mb-1">
                                                 ทดลองใช้งาน
                                             </div>
                                             <?php
@@ -181,7 +181,7 @@ include '../include/header.php';
                                             $count->execute();
                                             $count_user_id = $count->rowCount();
                                             ?>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -196,7 +196,7 @@ include '../include/header.php';
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            <div class="text-lg font-weight-bold text-warning text-uppercase mb-1">
                                                 รอการอนุมัติ
                                             </div>
                                             <?php
@@ -205,7 +205,7 @@ include '../include/header.php';
                                             $row = $count->fetch(PDO::FETCH_ASSOC);
                                             $count_user_id = $row['count'];
                                             ?>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800"><?= $count_user_id ?> ร้าน</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>

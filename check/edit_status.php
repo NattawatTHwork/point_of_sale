@@ -3,9 +3,9 @@ session_start();
 require_once '../include/connect.php';
 
 if (isset($_SESSION['user_id'])) {
-    $payment_id = $_POST['payment_id'];
+    $no_receipt = $_POST['no_receipt'];
 
-    $get_status = $connect->prepare("SELECT status FROM payment WHERE payment_id = '$payment_id'");
+    $get_status = $connect->prepare("SELECT status FROM payment WHERE no_receipt = '$no_receipt'");
     $get_status->execute();
     $row_status = $get_status->fetch(PDO::FETCH_ASSOC);
 
@@ -14,7 +14,7 @@ if (isset($_SESSION['user_id'])) {
     } else {
         $new_status = 0;
     }
-    $edit_status = $connect->query("UPDATE payment SET status = '$new_status' WHERE payment_id = '$payment_id'");
+    $edit_status = $connect->query("UPDATE payment SET status = '$new_status' WHERE no_receipt = '$no_receipt'");
     if ($edit_status) {
         echo 'success';
         exit();

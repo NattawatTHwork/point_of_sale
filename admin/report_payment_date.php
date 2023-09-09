@@ -162,7 +162,7 @@ $months = array(
                                                 <td class="text-center"><?= $j++ ?></td>
                                                 <td class="text-center"><?= $row['no_receipt'] ?></td>
                                                 <td class="text-center"><?= $row['method'] == 1 ? 'พร้อมเพย์' : 'เงินสด' ?></td>
-                                                <td class="text-center"><?= $total_price ?></td>
+                                                <td class="text-center"><?= number_format($total_price, 2, '.', ',') ?></td>
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -185,7 +185,7 @@ $months = array(
                                     <tfoot>
                                         <tr>
                                             <th colspan="3" class="text-center">ยอดขายรวม</th>
-                                            <th class="text-center"><?= $all_price ?></th>
+                                            <th class="text-center"><?= number_format($all_price, 2, '.', ',') ?></th>
                                             <th colspan="2"></th>
                                         </tr>
                                     </tfoot>

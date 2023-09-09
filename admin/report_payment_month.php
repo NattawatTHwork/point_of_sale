@@ -143,14 +143,14 @@ $months = array(
                                         ?>
                                             <tr>
                                                 <td class="text-center"><?= $i ?></td>
-                                                <td class="text-center"><?= $row_price_date['total_price'] ? $row_price_date['total_price'] : 0 ?></td>
+                                                <td class="text-center"><?= $row_price_date['total_price'] ? number_format($row_price_date['total_price'], 2, '.', ',') : 0 ?></td>
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                             ตัวเลือก
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="./report_payment_date.php?date=<?= $i ?>&month=<?= $month ?>&year=<?= $year ?>">ดูข้อมูล</a>
+                                                            <a class="dropdown-item" href="./report_payment_date.php?user_id=<?= $user_id ?>&date=<?= $i ?>&month=<?= $month ?>&year=<?= $year ?>">ดูข้อมูล</a>
                                                             <!-- <button class="dropdown-item" type="button" onclick="delete_data(<?= $row['no_receipt'] ?>)">ลบ</button> -->
                                                         </div>
                                                     </div>
@@ -161,7 +161,7 @@ $months = array(
                                     <tfoot>
                                         <tr>
                                             <th colspan="1" class="text-center">ยอดขายรวม</th>
-                                            <th class="text-center"><?= $all_price ?></th>
+                                            <th class="text-center"><?= number_format($all_price, 2, '.', ',') ?></th>
                                             <th></th>
                                         </tr>
                                     </tfoot>

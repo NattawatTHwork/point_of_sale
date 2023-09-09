@@ -28,7 +28,7 @@ if ($count > 0) {
     foreach ($row_service_fee as $row_fee) {
         $total_price = $total_price + ($row_fee['quantity'] * $row_fee['net_price']);
     }
-    $fee = $total_price * 0.02;
+    $fee = number_format((($total_price * 0.93) * 0.02), 2, '.', ',');
 }
 
 

@@ -57,7 +57,7 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
                                                         </svg>
                                                     </a>
                                                 </td>
-                                                <td class="text-center"><button class="btn <?= $row['status'] == 0 ? 'btn-danger' : 'btn-success' ?>" onclick="change_status(<?= $row['payment_id'] ?>)"><?= $row['status'] == 0 ? 'ยังไม่ได้จัดทำ' : 'จัดทำแล้ว' ?></button></td>
+                                                <td class="text-center"><button class="btn <?= $row['status'] == 0 ? 'btn-danger' : 'btn-success' ?>" onclick="change_status(<?= $row['no_receipt'] ?>)"><?= $row['status'] == 0 ? 'ยังไม่ได้จัดทำ' : 'จัดทำแล้ว' ?></button></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -101,12 +101,12 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/file-saver@1.3.3/FileSaver.js"></script>
     <script>
-        function change_status(event) {
+        function change_status(no_receipt) {
             $.ajax({
                 url: 'check/edit_status.php',
                 method: 'POST',
                 data: {
-                    payment_id: event
+                    no_receipt: no_receipt
                 },
                 success: function(response) {
                     if (response == 'success') {
