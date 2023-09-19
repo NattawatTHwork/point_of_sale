@@ -11,15 +11,6 @@ include '../include/header.php';
 
 $user_data = $connect->prepare("SELECT * FROM user");
 if (isset($_GET['status'])) {
-    // if ($_GET['status'] == 'active' || $_GET['status'] == 'inactive') {
-    //     if ($_GET['status'] == 'active') {
-    //         $status = 1;
-    //     } else {
-    //         $status = 0;
-    //     }
-    //     $user_data = $connect->prepare("SELECT * FROM user WHERE status = '$status'");
-    // }
-
     if ($_GET['status'] == 'member_active' || $_GET['status'] == 'member_inactive' || $_GET['status'] == 'trial' || $_GET['status'] == 'wait') {
         if ($_GET['status'] == 'member_active') {
             $user_data = $connect->prepare("SELECT *, COUNT(*) as count FROM member INNER JOIN user ON member.user_id = user.user_id WHERE status = 1 GROUP BY member.user_id HAVING count > 1");
@@ -34,10 +25,6 @@ if (isset($_GET['status'])) {
 }
 $user_data->execute();
 $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
-// echo '<pre>';
-// print_r($row_user);
-// echo '</pre>';
-
 ?>
 
 <body id="page-top">
@@ -130,7 +117,6 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                         <div class="dropdown-menu">
                                                             <button class="dropdown-item" type="button" onclick="get_user(<?= $row['user_id'] ?>)">ดูข้อมูล</button>
                                                             <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูเครื่องดื่ม</button>
-                                                            <!-- <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button> -->
                                                             <a class="dropdown-item" type="button" href="manage_user.php?user_id=<?= $row['user_id'] ?>">ประวัติการใช้บริการ</a>
                                                             <a class="dropdown-item" type="button" href="report_payment_date.php?user_id=<?= $row['user_id'] ?>">รายงานรายวัน</a>
                                                             <a class="dropdown-item" type="button" href="report_payment_month.php?user_id=<?= $row['user_id'] ?>">รายงานรายเดือน</a>

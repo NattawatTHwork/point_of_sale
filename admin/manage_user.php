@@ -392,12 +392,6 @@ $row_user = $user_data->fetch(PDO::FETCH_ASSOC);
                 }
             });
         }
-
-        // $('#dataTable').DataTable({
-        //     order: [
-        //         [1, 'desc']
-        //     ] // Sort by the second column in descending order
-        // })
     </script>
 </body>
 

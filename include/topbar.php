@@ -28,7 +28,7 @@ if (isset($_SESSION['user_id'])) {
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= isset($_SESSION['user_id']) ? $row_profile['store'] : $row_profile['firstname'] . ' ' . $row_profile['lastname'] ?></span>
-                <img class="img-profile rounded-circle" src="../img/undraw_profile.svg">
+                <img class="img-profile rounded-circle" src="<?= isset($_SESSION['admin_id']) ? '../img/undraw_profile.svg' : 'img/undraw_profile.svg' ?>">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -42,7 +42,7 @@ if (isset($_SESSION['user_id'])) {
                         ประวัติการใช้บริการ
                     </a>
                 <?php } ?>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="check/logout.php">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     ออกจากระบบ
                 </a>

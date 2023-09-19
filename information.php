@@ -76,7 +76,6 @@ if ($count > 0) {
         <div class="text-end">
             <a href="./check/logout.php" type="button" class="btn btn-danger m-3">ออกจากระบบ</a>
         </div>
-        <!-- <div class="container-sm w-50" style="margin: 0; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> -->
         <div class="container-sm w-50" style="margin-top: 20px; margin-bottom: 20px;">
             <?php
             if ($count == 0) {

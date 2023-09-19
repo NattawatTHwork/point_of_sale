@@ -29,7 +29,6 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Products</h1>
-                        <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> เพิ่มประเภท</a> -->
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#insert_product">
                             <i class="fas fa-download fa-sm text-white-50"></i> เพิ่มเครื่องดื่ม
                         </button>
@@ -106,7 +105,6 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <!-- <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="ชื่อเครื่องดื่ม" value="<?= $_SESSION['user_id'] ?>" required> -->
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="formGroupExampleInput">ชื่อเครื่องดื่ม</label>

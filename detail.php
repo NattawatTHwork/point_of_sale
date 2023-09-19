@@ -124,31 +124,6 @@ if ($row_detail_data[0]['user_id'] != $_SESSION['user_id']) {
             // Print the receipt and close the window
             printWindow.print();
             printWindow.close();
-
-
-            // // Get the receipt table element
-            // var table = document.getElementById("Table");
-
-            // // Open a new window to send print commands to the printer
-            // var printWindow = window.open('', 'Print Receipt');
-            // printWindow.document.write('<html><head><title>Receipt</title></head><body>');
-
-            // // Add the CSS styles to format the receipt for printing
-            // printWindow.document.write('<style>');
-            // printWindow.document.write('@media print {');
-            // printWindow.document.write('  body { font-size: 12pt; }');
-            // printWindow.document.write('  table { border-collapse: collapse; }');
-            // printWindow.document.write('  th, td { padding: 0.2em 0.5em; border: 1px solid black; }');
-            // printWindow.document.write('}');
-            // printWindow.document.write('</style>');
-
-            // // Add the receipt table to the window
-            // printWindow.document.write(table.outerHTML);
-            // printWindow.document.write('</body></html>');
-
-            // // Send print commands to the printer
-            // printWindow.print();
-            // printWindow.close();
         }
     </script>
 </body>

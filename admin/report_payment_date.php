@@ -46,9 +46,6 @@ $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
 $user = $connect->prepare("SELECT user.user_id, store FROM user INNER JOIN member ON user.user_id = member.user_id GROUP BY user_id");
 $user->execute();
 $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
-// echo '<pre>';
-// print_r($row_user);
-// echo '</pre>';
 
 $months = array(
     "มกราคม", // January
