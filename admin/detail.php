@@ -14,9 +14,6 @@ if (isset($_GET['no_receipt'])) {
 } else {
     $no_receipt = '';
 }
-// $data = $connect->prepare("SELECT * FROM payment WHERE no_receipt = '$no_receipt'");
-// $data->execute();
-// $row_data = $data->fetch(PDO::FETCH_ASSOC);
 
 $detail_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id INNER JOIN user ON product.user_id = user.user_id WHERE record.no_receipt = $no_receipt");
 $detail_data->execute();
@@ -31,7 +28,7 @@ $row_detail_data = $detail_data->fetchAll(PDO::FETCH_ASSOC);
                 <?php include '../include/topbar.php'; ?>
                 <div class="container-fluid">
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Report by Payments</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Receipt</h1>
                     </div>
 
                     <!-- DataTales Example -->

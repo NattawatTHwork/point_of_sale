@@ -136,67 +136,6 @@ $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
                 }
             });
         };
-
-        // function get_record(no_receipt) {
-        //     $.ajax({
-        //         url: 'check/get_record.php',
-        //         type: "POST",
-        //         data: {
-        //             no_receipt: no_receipt
-        //         },
-        //         success: function(response) {
-        //             const data = JSON.parse(response);
-
-        //             const myArrayDiv = document.getElementById("myArray");
-
-        //             const table = document.createElement('table');
-        //             table.classList.add('table', 'table-bordered', 'w-100');
-
-        //             const headerRow = document.createElement('tr');
-        //             const header1 = document.createElement('th');
-        //             header1.textContent = 'ชื่อเครื่องดื่ม';
-        //             header1.style.width = '30%';
-        //             header1.classList.add('text-center');
-        //             const header2 = document.createElement('th');
-        //             header2.textContent = 'จำนวน';
-        //             header2.style.width = '20%';
-        //             header2.classList.add('text-center');
-        //             const header3 = document.createElement('th');
-        //             header3.textContent = 'ราคา';
-        //             header3.style.width = '20%';
-        //             header3.classList.add('text-center');
-        //             headerRow.appendChild(header1);
-        //             headerRow.appendChild(header2);
-        //             headerRow.appendChild(header3);
-        //             table.appendChild(headerRow);
-
-        //             for (let i = 0; i < data.length; i++) {
-        //                 const row = document.createElement('tr');
-        //                 const cell1 = document.createElement('td');
-        //                 const cell2 = document.createElement('td');
-        //                 const cell3 = document.createElement('td');
-        //                 cell1.textContent = data[i].name;
-        //                 cell1.style.width = '30%';
-        //                 cell1.classList.add('text-center');
-        //                 cell2.textContent = data[i].quantity;
-        //                 cell2.style.width = '20%';
-        //                 cell2.classList.add('text-center');
-        //                 cell3.textContent = data[i].net_price;
-        //                 cell3.style.width = '20%';
-        //                 cell3.classList.add('text-center');
-        //                 row.appendChild(cell1);
-        //                 row.appendChild(cell2);
-        //                 row.appendChild(cell3);
-        //                 table.appendChild(row);
-        //             }
-
-        //             myArrayDiv.innerHTML = '';
-        //             myArrayDiv.appendChild(table);
-
-        //             $("#view_record").modal("show");
-        //         }
-        //     });
-        // }
     </script>
 </body>
 

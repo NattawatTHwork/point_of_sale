@@ -3,7 +3,7 @@ session_start();
 require_once '../include/connect.php';
 
 if (isset($_SESSION['user_id'])) {
-    // $product_id = $_POST['product_id'];
+    $product_id = $_POST['product_id'];
 
     $get_product = $connect->prepare("SELECT * FROM product WHERE product_id = '$product_id'");
     $get_product->execute();

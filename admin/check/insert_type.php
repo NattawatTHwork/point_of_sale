@@ -4,7 +4,6 @@ require_once '../../include/connect.php';
 
 if (isset($_SESSION['admin_id'])) {
     $type = $_POST['type'];
-    $admin_id = $_SESSION['admin_id'];
 
     $insert_type = $connect->prepare("INSERT INTO type(type) VALUES(:type)");
     $insert_type->bindParam(":type", $type);

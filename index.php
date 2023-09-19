@@ -13,16 +13,10 @@ $user_id = $_SESSION['user_id'];
 $product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id'");
 $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
-// echo '<pre>';
-// print_r($row_product);
-// echo '</pre>';
 
 $type = $connect->prepare("SELECT type.type_id, type, COUNT(*) as count FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id' GROUP BY type.type_id, type ORDER BY type ASC");
 $type->execute();
 $row_type = $type->fetchAll(PDO::FETCH_ASSOC);
-// echo '<pre>';
-// print_r($row_type);
-// echo '</pre>';
 
 $qr_code = $connect->prepare("SELECT img_path FROM user WHERE user_id = '$user_id'");
 $qr_code->execute();
@@ -78,7 +72,7 @@ if ($count > 1) {
                                             <img class="card-img-top" src="./img/<?= $row['img_path'] != '' ? $row['img_path']  : 'no_image.jpg' ?>" alt="Card image cap" style="max-height: 200px; object-fit: contain; border-radius: 5%;">
                                         </div>
                                         <div class="card-body">
-                                            <h4 class="card-title font-weight-bold" id="name<?= $i += 1 ?>"><?= $row['name'] ?></h4>
+                                            <h4 class="card-title font-weight-bold" id="name<?= $i += 1 ?>" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= $row['name'] ?></h4>
                                             <h5 class="card-text" id="net_price<?= $i ?>"><?= $row['price'] ?> บาท</h5>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">

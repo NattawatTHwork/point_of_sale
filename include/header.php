@@ -33,4 +33,5 @@
 
 <?php
   include 'pdpa_popup.php';
+  date_default_timezone_set('Asia/Bangkok');
 ?>

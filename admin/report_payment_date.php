@@ -9,62 +9,46 @@ if (!isset($_SESSION['admin_id'])) {
 require '../include/connect.php';
 include '../include/header.php';
 
-if (!empty($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
-} else {
-    $user_fist = $connect->prepare("SELECT * FROM user");
-    $user_fist->execute();
-    $row_user_first = $user_fist->fetch(PDO::FETCH_ASSOC);
-    $user_id = $row_user_first['user_id'];
-}
-
-if (!empty($_GET['date'])) {
-    $date = $_GET['date'];
-}
-
-if (!empty($_GET['month'])) {
-    $month = $_GET['month'];
-}
-
-if (!empty($_GET['year'])) {
-    $year = $_GET['year'];
-}
-
-$u = '';
 $d = date('d');
 $m = date('m');
 $y = date('Y');
 
-if (isset($user_id)) {
-    $u = $user_id;
+if (!empty($_GET['user_id'])) {
+    $u = $_GET['user_id'];
+} else {
+    $user_fist = $connect->prepare("SELECT * FROM user");
+    $user_fist->execute();
+    if ($user_fist->rowCount() > 0) {
+        $row_user_first = $user_fist->fetch(PDO::FETCH_ASSOC);
+        $u = $row_user_first['user_id'];
+    } else {
+        $u = '';
+    }
 }
 
-if (isset($date)) {
-    $d = $date;
+if (!empty($_GET['date'])) {
+    $d = $_GET['date'];
 }
 
-if (isset($month)) {
-    $m = $month;
+if (!empty($_GET['month'])) {
+    $m = $_GET['month'];
 }
 
-if (isset($year)) {
-    $y = $year;
+if (!empty($_GET['year'])) {
+    $y = $_GET['year'];
 }
 
 $row_report = [];
-$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id GROUP BY record.no_receipt");
-if (isset($user_id) && isset($date) && isset($month) && isset($year)) {
-    $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $date AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
-} elseif (isset($user_id)) {
-    $currentDate = date('d');
-    $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = '$currentDate' AND MONTH(timestamp) = MONTH(CURRENT_DATE()) AND YEAR(timestamp) = YEAR(CURRENT_DATE()) GROUP BY record.no_receipt");
-}
+$report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$u' AND DATE_FORMAT(timestamp, '%d') = $d AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y GROUP BY record.no_receipt");
 $report_data->execute();
 $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
 
-$user = $connect->prepare("SELECT * FROM user");
+$user = $connect->prepare("SELECT user.user_id, store FROM user INNER JOIN member ON user.user_id = member.user_id GROUP BY user_id");
 $user->execute();
 $row_user = $user->fetchAll(PDO::FETCH_ASSOC);
+// echo '<pre>';
+// print_r($row_user);
+// echo '</pre>';
 
 $months = array(
     "มกราคม", // January

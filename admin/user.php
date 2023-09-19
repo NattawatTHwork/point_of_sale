@@ -132,7 +132,7 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                                                             <button class="dropdown-item" type="button" onclick="get_product(<?= $row['user_id'] ?>)">ดูเครื่องดื่ม</button>
                                                             <!-- <button class="dropdown-item" type="button" onclick="edit_status(<?= $row['user_id'] ?>)">เปลี่ยนสถานะ</button> -->
                                                             <a class="dropdown-item" type="button" href="manage_user.php?user_id=<?= $row['user_id'] ?>">ประวัติการใช้บริการ</a>
-                                                            <a class="dropdown-item" type="button" href="report_payment_date.php?user_id=<?= $row['user_id'] ?>">รายงานยรายวัน</a>
+                                                            <a class="dropdown-item" type="button" href="report_payment_date.php?user_id=<?= $row['user_id'] ?>">รายงานรายวัน</a>
                                                             <a class="dropdown-item" type="button" href="report_payment_month.php?user_id=<?= $row['user_id'] ?>">รายงานรายเดือน</a>
                                                         </div>
                                                     </div>

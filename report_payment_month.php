@@ -9,36 +9,21 @@ if (!isset($_SESSION['user_id'])) {
 require 'include/connect.php';
 include 'include/header.php';
 
-if (!empty($_GET['month'])) {
-    $month = $_GET['month'];
-} else {
-    $month = date('m');
-}
-
-if (!empty($_GET['year'])) {
-    $year = $_GET['year'];
-} else {
-    $year = date('Y');
-}
-
 $m = date('m');
 $y = date('Y');
 
-if (isset($month)) {
-    $m = $month;
+if (!empty($_GET['month'])) {
+    $m = $_GET['month'];
 }
 
-if (isset($year)) {
-    $y = $year;
+if (!empty($_GET['year'])) {
+    $y = $_GET['year'];
 }
 
-$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $m, $y);
 
 $user_id = $_SESSION['user_id'];
 $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' GROUP BY record.no_receipt");
-if (isset($month) && isset($year)) {
-    $report_data = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year GROUP BY record.no_receipt");
-}
 $report_data->execute();
 $row_report = $report_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -110,7 +95,7 @@ $months = array(
                                         <?php
                                         $all_price = 0;
                                         for ($i = 1; $i <= $daysInMonth; $i++) {
-                                            $price_date = $connect->prepare("SELECT user_id, SUM(quantity * net_price) AS total_price FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt INNER JOIN product ON product.product_id = record.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $i AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                            $price_date = $connect->prepare("SELECT user_id, SUM(quantity * net_price) AS total_price FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt INNER JOIN product ON product.product_id = record.product_id WHERE user_id = '$user_id' AND DATE_FORMAT(timestamp, '%d') = $i AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y");
                                             $price_date->execute();
                                             $row_price_date = $price_date->fetch(PDO::FETCH_ASSOC);
                                             $all_price += $row_price_date['total_price'];
@@ -124,8 +109,7 @@ $months = array(
                                                             ตัวเลือก
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="./report_payment_date.php?date=<?= $i ?>&month=<?= $month ?>&year=<?= $year ?>">ดูข้อมูล</a>
-                                                            <!-- <button class="dropdown-item" type="button" onclick="delete_data(<?= $row['no_receipt'] ?>)">ลบ</button> -->
+                                                            <a class="dropdown-item" href="./report_payment_date.php?date=<?= $i ?>&month=<?= $m ?>&year=<?= $y ?>">ดูข้อมูล</a>
                                                         </div>
                                                     </div>
                                                 </td>

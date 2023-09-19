@@ -26,42 +26,18 @@ $months = array(
     "ธันวาคม" // December
 );
 
-// if (isset($_GET['month'])) {
-//     $month = $_GET['month'];
-// } else {
-//     $month = 'MONTH(CURRENT_DATE())';
-// }
-
-// if (isset($_GET['year'])) {
-//     $year = $_GET['year'];
-// } else {
-//     $year = 'YEAR(CURRENT_DATE())';
-// }
-
-if (!empty($_GET['month'])) {
-    $month = $_GET['month'];
-} else {
-    $month = date('m');
-}
-
-if (!empty($_GET['year'])) {
-    $year = $_GET['year'];
-} else {
-    $year = date('Y');
-}
-
 $m = date('m');
 $y = date('Y');
 
-if (isset($month)) {
-    $m = $month;
+if (!empty($_GET['month'])) {
+    $m = $_GET['month'];
 }
 
-if (isset($year)) {
-    $y = $year;
+if (!empty($_GET['year'])) {
+    $y = $_GET['year'];
 }
 
-$current_date = date("j F Y", strtotime("now", strtotime("+7 hours")));
+$current_date =  date('Y-m-d');
 $thai_month_names = array(
     'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
     'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
@@ -72,7 +48,6 @@ $thai_month = $thai_month_names[$month_number - 1];
 $date_obj = date_create($current_date);
 date_modify($date_obj, "+543 years");
 $current_date = date_format($date_obj, "j $thai_month Y");
-$today = date('Y-m-d');
 ?>
 
 <body id="page-top">
@@ -179,7 +154,7 @@ $today = date('Y-m-d');
                                                 ยอดขาย (ต่อเดือน)
                                             </div>
                                             <?php
-                                            $earnings_monthly = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                            $earnings_monthly = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y");
                                             $earnings_monthly->execute();
                                             $row_earnings_monthly = $earnings_monthly->fetchAll(PDO::FETCH_ASSOC);
                                             $sum_month = 0;
@@ -208,7 +183,7 @@ $today = date('Y-m-d');
                                                 ยอดขาย (ต่อปี)
                                             </div>
                                             <?php
-                                            $earnings_yearly = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $year");
+                                            $earnings_yearly = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $y");
                                             $earnings_yearly->execute();
                                             $row_earnings_yearly = $earnings_yearly->fetchAll(PDO::FETCH_ASSOC);
                                             $sum_year = 0;
@@ -239,7 +214,7 @@ $today = date('Y-m-d');
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                     <?php
-                                                    $item = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                                    $item = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y");
                                                     $item->execute();
                                                     $row_item = $item->fetchAll(PDO::FETCH_ASSOC);
                                                     $sum_item = 0;
@@ -269,7 +244,7 @@ $today = date('Y-m-d');
                                                 จำนวน (ต่อปี)
                                             </div>
                                             <?php
-                                            $item_year = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $year");
+                                            $item_year = $connect->prepare("SELECT * FROM product INNER JOIN record ON product.product_id = record.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $y");
                                             $item_year->execute();
                                             $row_item_year = $item_year->fetchAll(PDO::FETCH_ASSOC);
                                             $sum_item_year = 0;
@@ -291,14 +266,13 @@ $today = date('Y-m-d');
                     <!-- Content Row -->
                     <div class="row">
                         <?php
-                        $product = $connect->prepare("SELECT * FROM product WHERE user_id = '$user_id'");
+                        $product = $connect->prepare("SELECT * FROM product WHERE user_id = '$user_id' LIMIT 5");
                         $product->execute();
                         $row_product = $product->fetchAll(PDO::FETCH_ASSOC);
 
-                        $quantity = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN product ON record.product_id = product.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                        $quantity = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN product ON record.product_id = product.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y");
                         $quantity->execute();
                         $row_quantity = $quantity->fetch(PDO::FETCH_ASSOC);
-                        // echo $row_quantity['quantityall'];
                         ?>
                         <!-- Content Column -->
                         <div class="col-12 mb-4">
@@ -312,10 +286,9 @@ $today = date('Y-m-d');
                                     <?php
                                     foreach ($row_product as $row) {
                                         $product_id = $row['product_id'];
-                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND MONTH(timestamp) = $month AND YEAR(timestamp) = $year");
+                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND MONTH(timestamp) = $m AND YEAR(timestamp) = $y");
                                         $record->execute();
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
-                                        // echo $row_record['quantityall'];
                                     ?>
                                         <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในเดือนนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">
@@ -330,14 +303,13 @@ $today = date('Y-m-d');
                     <!-- Content Row -->
                     <div class="row">
                         <?php
-                        $product = $connect->prepare("SELECT * FROM product WHERE user_id = '$user_id'");
+                        $product = $connect->prepare("SELECT * FROM product WHERE user_id = '$user_id' LIMIT 5");
                         $product->execute();
                         $row_product = $product->fetchAll(PDO::FETCH_ASSOC);
 
-                        $quantity = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN product ON record.product_id = product.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $year");
+                        $quantity = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN product ON record.product_id = product.product_id INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE user_id = '$user_id' AND YEAR(timestamp) = $y");
                         $quantity->execute();
                         $row_quantity = $quantity->fetch(PDO::FETCH_ASSOC);
-                        // echo $row_quantity['quantityall'];
                         ?>
                         <!-- Content Column -->
                         <div class="col-12 mb-4">
@@ -351,10 +323,9 @@ $today = date('Y-m-d');
                                     <?php
                                     foreach ($row_product as $row) {
                                         $product_id = $row['product_id'];
-                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND YEAR(timestamp) = $year");
+                                        $record = $connect->prepare("SELECT SUM(quantity) as quantityall FROM record INNER JOIN payment ON record.no_receipt = payment.no_receipt WHERE product_id = '$product_id' AND YEAR(timestamp) = $y");
                                         $record->execute();
                                         $row_record = $record->fetch(PDO::FETCH_ASSOC);
-                                        // echo $row_record['quantityall'];
                                     ?>
                                         <h4 class="small font-weight-bold"><?= $row['name'] ?> <span class="float-right"><?= $row_quantity['quantityall'] == 0 ? 'ไม่มียอดขายในปีนี้' : number_format(($row_record['quantityall'] / $row_quantity['quantityall']) * 100, 0) . '%' ?></span></h4>
                                         <div class="progress mb-4">

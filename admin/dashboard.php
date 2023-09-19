@@ -124,7 +124,7 @@ include '../include/header.php';
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-lg font-weight-bold text-success text-uppercase mb-1">
-                                                สมาชิก Active
+                                                สมาชิกใช้งานได้
                                             </div>
                                             <?php
                                             $count = $connect->prepare("SELECT user.user_id, COUNT(*) as count, status FROM user LEFT JOIN member ON user.user_id = member.user_id WHERE status = 1 GROUP BY user_id HAVING count > 1");
@@ -151,7 +151,7 @@ include '../include/header.php';
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">
-                                                สมาชิก Inactive
+                                                สมาชิกไม่ได้ใช้งาน
                                             </div>
                                             <?php
                                             $count = $connect->prepare("SELECT user.user_id, COUNT(*) as count, status FROM user LEFT JOIN member ON user.user_id = member.user_id WHERE status = 0 GROUP BY user_id HAVING count > 1");
