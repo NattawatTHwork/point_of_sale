@@ -10,7 +10,7 @@ require 'include/connect.php';
 include 'include/header.php';
 
 $user_id = $_SESSION['user_id'];
-$product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id'");
+$product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id' AND status = 1");
 $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 
