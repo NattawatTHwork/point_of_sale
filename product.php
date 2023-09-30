@@ -10,7 +10,7 @@ require 'include/connect.php';
 include 'include/header.php';
 
 $user_id = $_SESSION['user_id'];
-$product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id'");
+$product_data = $connect->prepare("SELECT * FROM product INNER JOIN type ON product.type_id = type.type_id WHERE user_id = '$user_id' AND product.status = 1");
 $product_data->execute();
 $row_product = $product_data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -47,7 +47,6 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                             <th width="35%" class="text-center">ชื่อ</th>
                                             <th width="30%" class="text-center">ประเภท</th>
                                             <th width="15%" class="text-center">ราคา</th>
-                                            <!-- <th width="10%" class="text-center">จำนวน</th> -->
                                             <th width="10%" class="text-center">ตัวเลือก</th>
                                         </tr>
                                     </thead>
@@ -62,7 +61,6 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                                 <td class="text-center"><?= $row['name'] ?></td>
                                                 <td class="text-center"><?= $row['type'] ?></td>
                                                 <td class="text-center"><?= $row['price'] ?></td>
-                                                <!-- <td class="text-center"><?= isset($row_quantity['quantity']) ? $row_quantity['quantity'] : 0 ?></td> -->
                                                 <td class="text-center">
                                                     <div class="dropdown">
                                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">

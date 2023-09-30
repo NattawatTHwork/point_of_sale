@@ -264,6 +264,17 @@ $row_type = $type_data->fetchAll(PDO::FETCH_ASSOC);
                                                 location.reload();
                                             });
                                     }
+                                    if (response == 'nodelete') {
+                                        Swal.fire({
+                                                title: 'ไม่สามารถลบได้',
+                                                icon: 'error',
+                                                confirmButtonText: 'ตกลง',
+                                                confirmButtonColor: '#4e73df'
+                                            })
+                                            .then(function() {
+                                                location.reload();
+                                            });
+                                    }
                                 },
                                 error: function(error) {
                                     console.log(error)
