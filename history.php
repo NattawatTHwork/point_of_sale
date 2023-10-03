@@ -140,9 +140,9 @@ $i = 1;
                     let res = JSON.parse(response);
                     var img = document.getElementById('img_path');
                     if (res.img_path.length === 0) {
-                        img.setAttribute("src", '../img/no_image.jpg');
+                        img.setAttribute("src", './img/no_image.jpg');
                     } else {
-                        img.setAttribute("src", '../img/' + res.img_path);
+                        img.setAttribute("src", './img/' + res.img_path);
                     }
                     $("#view").modal("show");
                 }

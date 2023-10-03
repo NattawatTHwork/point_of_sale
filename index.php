@@ -266,7 +266,7 @@ if ($count > 1) {
                                                     cancelButtonText: 'ยกเลิก'
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
-                                                        window.location.href = "/detail.php?no_receipt=" + response;
+                                                        window.location.href = "/detail.php?no_receipt=" + response; // cmru host เพิ่ม /62223615/beverage เข้าไปด้านหน้า
                                                     } else {
                                                         location.reload();
                                                     }
@@ -323,7 +323,7 @@ if ($count > 1) {
                                                     cancelButtonText: 'ยกเลิก'
                                                 }).then((result) => {
                                                     if (result.isConfirmed) {
-                                                        window.location.href = "/detail.php?no_receipt=" + response;
+                                                        window.location.href = "/detail.php?no_receipt=" + response; // cmru host เพิ่ม /62223615/beverage เข้าไปด้านหน้า
                                                     } else {
                                                         location.reload();
                                                     }

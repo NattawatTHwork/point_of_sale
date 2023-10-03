@@ -218,7 +218,6 @@ if ($count > 0) {
             }
 
             $('#insert_information').submit(function(event) {
-                console.log('111');
                 event.preventDefault();
                 var formData = new FormData(this);
                 $.ajax({
@@ -259,7 +258,6 @@ if ($count > 0) {
             });
 
             $('#contact').submit(function(event) {
-                console.log('111');
                 event.preventDefault();
                 var formData = new FormData(this);
                 $.ajax({

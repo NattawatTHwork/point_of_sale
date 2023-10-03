@@ -132,7 +132,7 @@ include '../include/header.php';
 
     <script>
         function member_active() {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member_active";
+            window.location.href = window.location.protocol + "//" + window.location.host + "/admin/user.php?status=member_active"; // cmru host เพิ่ม /62223615/beverage เข้าไปด้านหน้า admin
         }
 
         function member_inactive() {

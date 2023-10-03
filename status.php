@@ -10,7 +10,7 @@ require 'include/connect.php';
 include 'include/header.php';
 
 $user_id = $_SESSION['user_id'];
-$status = $connect->prepare("SELECT * FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE(timestamp) = DATE(CURRENT_DATE()) GROUP BY record.no_receipt ORDER BY status ASC");
+$status = $connect->prepare("SELECT *, payment.status as status FROM payment INNER JOIN record ON payment.no_receipt = record.no_receipt INNER JOIN product ON record.product_id = product.product_id WHERE user_id = '$user_id' AND DATE(timestamp) = DATE(CURRENT_DATE()) GROUP BY record.no_receipt ORDER BY payment.status ASC");
 $status->execute();
 $row_report = $status->fetchAll(PDO::FETCH_ASSOC);
 ?>

@@ -103,11 +103,11 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="form-group">
                         <label for="firstname">ชื่อ</label>
-                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="ประเภท" disabled>
+                        <input type="text" class="form-control" name="firstname" id="firstname" placeholder="" disabled>
                     </div>
                     <div class="form-group">
                         <label for="lastname">นามสกุล</label>
-                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="ประเภท" disabled>
+                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="" disabled>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -193,6 +193,11 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
+                    for (let key in res) {
+                        if (res[key] === null) {
+                            res[key] = "";
+                        }
+                    }
                     $("#email").val(res.email);
                     $("#password").val(res.password_view);
                     $("#firstname").val(res.firstname);

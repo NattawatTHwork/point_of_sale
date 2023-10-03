@@ -1,6 +1,6 @@
 <?php
 $db_host = 'localhost';
-$db_name = 'pos';
+$db_name = 'db62223615';
 $db_user = 'root';
 $db_pass = '';
 

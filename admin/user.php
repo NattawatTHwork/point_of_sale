@@ -298,6 +298,11 @@ $row_user = $user_data->fetchAll(PDO::FETCH_ASSOC);
                 },
                 success: function(response) {
                     let res = JSON.parse(response);
+                    for (let key in res) {
+                        if (res[key] === null) {
+                            res[key] = "";
+                        }
+                    }
                     if (res.id_number) {
                         var idNumber = res.id_number;
                         var formattedIDNumber = idNumber.slice(0, 1) + '-' + idNumber.slice(1, 5) + '-' + idNumber.slice(5, 10) + '-' + idNumber.slice(10, 12) + '-' + idNumber.slice(12);
